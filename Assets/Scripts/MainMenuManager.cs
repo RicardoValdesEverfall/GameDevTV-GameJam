@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class MainMenuManager : MonoBehaviour
 {
     [SerializeField] public enum MenuStates { main, game }
-    [SerializeField] private MenuStates CurrentState;
+    [SerializeField] public MenuStates CurrentState;
 
     private GameObject StartMenuParent;
     private GameObject SettingsMenuParent;

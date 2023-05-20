@@ -7,6 +7,8 @@ TagManager:
   - SubMenu
   - StartSubMenu
   - SettingsSubMenu
+  - Player2D
+  - MainMenu
   layers:
   - Default
   - TransparentFX
