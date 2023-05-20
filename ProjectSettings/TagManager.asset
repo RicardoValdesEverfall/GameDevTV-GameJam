@@ -9,6 +9,8 @@ TagManager:
   - SettingsSubMenu
   - Player2D
   - MainMenu
+  - BackgroundController
+  - 2DRenderer
   layers:
   - Default
   - TransparentFX

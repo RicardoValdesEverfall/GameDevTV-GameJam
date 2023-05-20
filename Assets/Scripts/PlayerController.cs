@@ -7,8 +7,11 @@ public class PlayerController : MonoBehaviour
     //[Header("General Attributes")]
     [SerializeField] public enum PlayerState { is2D, is3D, isDead };
     [SerializeField] public PlayerState PlayerCurrentState;
+    [SerializeField] private Animator PlayerAnimator;
 
     private MainMenuManager _mainMenuRef;
+
+    private bool consoleStatus; //False = closed, True = open.
 
     [Header("3D Attributes")]
     [SerializeField] private Transform cameraTransform_3D;
@@ -18,10 +21,14 @@ public class PlayerController : MonoBehaviour
 
     private Quaternion startingRotation_3D;
 
+    private bool isLooking_3D;
+
+
     #region 2D ATTRIBUTES
     [Header("2D Attributes")]
     
     [SerializeField] public GameObject PlayerGameObject_2D;
+    [SerializeField] private BackgroundScroller[] BackgroundScroller_2D;
     [SerializeField, Range(0f, 100f)] private float maxSpeed_2D;
     [SerializeField, Range(0f, 100f)] private float maxAcceleration_2D;
     [SerializeField, Range(0f, 100f)] private float maxAirAcceleration_2D;
@@ -52,18 +59,19 @@ public class PlayerController : MonoBehaviour
     {
         if (_mainMenuRef == null) { _mainMenuRef = GameObject.FindGameObjectWithTag("MainMenu").GetComponent<MainMenuManager>(); }
         if (_mainMenuRef.CurrentState != MainMenuManager.MenuStates.game) { _mainMenuRef.CurrentState = MainMenuManager.MenuStates.game; }
-
-        PlayerCurrentState = PlayerState.is3D;
+        if (PlayerAnimator == null) { PlayerAnimator = this.GetComponent<Animator>(); }
+        PlayerCurrentState = PlayerState.is2D;
         startingRotation_3D = cameraTransform_3D.localRotation;
 
         if (PlayerGameObject_2D == null) { PlayerGameObject_2D = GameObject.FindGameObjectWithTag("Player2D"); }
+        //if (BackgroundScroller_2D == null) { BackgroundScroller_2D = GameObject.FindGameObjectWithTag("BackgroundController").GetComponent<BackgroundScroller>(); }
         if (playerBody_2D == null) { playerBody_2D = PlayerGameObject_2D.GetComponent<Rigidbody2D>(); }
         if (environmentGround_2D == null) { environmentGround_2D = PlayerGameObject_2D.GetComponent<Ground>(); }
     }
 
     void Update()
     {
-        switch (PlayerCurrentState)
+        /*switch (PlayerCurrentState)
         {
             case PlayerState.is2D:
                 Handle2DInput();
@@ -73,9 +81,27 @@ public class PlayerController : MonoBehaviour
                 HandleRotation();
                 Handle3DInput();
                 break;
+        }*/
+
+        if (PlayerCurrentState == PlayerState.is2D)
+        { 
+            if (!consoleStatus) { HandleConsole("OpenConsole"); consoleStatus = true; }
+
+            Handle2DInput();
+            if (Input.GetMouseButton(2))
+            {
+                HandleRotation();
+                Handle3DInput();
+            }
+            else { ResetCamera(); }
         }
-        
-        if (Input.GetKeyDown(KeyCode.Escape)) { ShowSettingsMenu(1); }
+
+        if (PlayerCurrentState == PlayerState.is3D)
+        {
+            if (consoleStatus) { HandleConsole("CloseConsole"); consoleStatus = false; }
+            HandleRotation();
+            Handle3DInput();
+        }
     }
 
     private void FixedUpdate()
@@ -115,11 +141,18 @@ public class PlayerController : MonoBehaviour
     public void Handle2DInput()
     {
         playerInput_2D.x = Input.GetAxisRaw("Horizontal");
+        foreach (BackgroundScroller scroller in BackgroundScroller_2D) { scroller.ApplyScroll(playerInput_2D.x); }
 
         playerDir_2D.x = playerInput_2D.x;
         desiredVelocity_2D = new Vector2(playerDir_2D.x, 0f) * Mathf.Max(maxSpeed_2D - environmentGround_2D.Friction, 0f);
 
         desiredJump |= Input.GetKeyDown(KeyCode.Space);
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PlayerCurrentState = PlayerState.is3D;
+            HandleConsole("CloseConsole");
+        }
     }
 
     public void Jump2D()
@@ -139,7 +172,15 @@ public class PlayerController : MonoBehaviour
 
     public void Handle3DInput()
     {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            PlayerCurrentState = PlayerState.is2D;
+        }
+    }
 
+    public void HandleConsole(string animToPlay)
+    {
+        PlayerAnimator.Play(animToPlay);
     }
 
     public void ResetCamera()
