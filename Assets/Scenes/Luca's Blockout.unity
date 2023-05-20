@@ -1563,8 +1563,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerCurrentState: 0
+  PlayerAnimator: {fileID: 0}
   cameraTransform_3D: {fileID: 963194228}
   PlayerGameObject_2D: {fileID: 7584206323907434715}
+  BackgroundScroller_2D: []
   maxSpeed_2D: 45
   maxAcceleration_2D: 55
   maxAirAcceleration_2D: 55
@@ -2271,7 +2273,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1425007805}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &759486692
 GameObject:
@@ -4816,7 +4818,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1546961496}
   - {fileID: 1588673449}
   - {fileID: 711101335}
   m_Father: {fileID: 0}
@@ -5042,13 +5043,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1546961495}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.91, y: 0, z: 3.6}
   m_LocalScale: {x: 2.299655, y: 2.9902282, z: 2.6866004}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1425007805}
-  m_RootOrder: 0
+  m_Father: {fileID: 1588673449}
+  m_RootOrder: 55
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1546961497
 MeshCollider:
@@ -5294,8 +5295,9 @@ Transform:
   - {fileID: 900727685}
   - {fileID: 657410450}
   - {fileID: 1438176022}
+  - {fileID: 1546961496}
   m_Father: {fileID: 1425007805}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1617695948
 GameObject:
@@ -5705,7 +5707,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1707628494
 Transform:
   m_ObjectHideFlags: 0
