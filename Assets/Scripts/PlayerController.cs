@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Range(0f, 100f)] private float maxAcceleration_2D;
     [SerializeField, Range(0f, 100f)] private float maxAirAcceleration_2D;
 
-    [SerializeField, Range(0f, 100f)] private float jumpHeight_2D;
+    [SerializeField, Range(10f, 100f)] private int jumpHeight_2D;
     [SerializeField, Range(0f, 30f)] private float upwardMultiplier_2D;
     [SerializeField, Range(0f, 30f)] private float downwardMultiplier_2D;
     [SerializeField, Range(0f, 3f)] private int maxAirJumps_2D;
@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
     private float maxSpeedChange_2D;
     private float acceleration_2D;
     private bool _onGround_2D;
+    private bool desiredJump;
     private int jumpPhase_2D;
     #endregion
 
@@ -89,6 +90,8 @@ public class PlayerController : MonoBehaviour
             maxSpeedChange_2D = acceleration_2D * Time.deltaTime;
             velocity_2D.x = Mathf.MoveTowards(velocity_2D.x, desiredVelocity_2D.x, maxSpeedChange_2D);
 
+            if(desiredJump) { desiredJump = false; Jump2D(); }
+
             if (playerBody_2D.velocity.y > 0) { playerBody_2D.gravityScale = upwardMultiplier_2D; }
             else if (playerBody_2D.velocity.y > 0) { playerBody_2D.gravityScale = downwardMultiplier_2D; }
             else if (playerBody_2D.velocity.y == 0) { playerBody_2D.gravityScale = defaultGravityScale_2D; }
@@ -116,20 +119,21 @@ public class PlayerController : MonoBehaviour
         playerDir_2D.x = playerInput_2D.x;
         desiredVelocity_2D = new Vector2(playerDir_2D.x, 0f) * Mathf.Max(maxSpeed_2D - environmentGround_2D.Friction, 0f);
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (_onGround_2D || jumpPhase_2D < maxAirJumps_2D)
-            {
-                jumpPhase_2D++;
-                float _jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * jumpHeight_2D);
-                if (velocity_2D.y > 0)
-                {
-                    _jumpSpeed = Mathf.Max(_jumpSpeed - velocity_2D.y, 0f);
-                }
+        desiredJump |= Input.GetKeyDown(KeyCode.Space);
+    }
 
-                Debug.Log(_jumpSpeed);
-                velocity_2D.y += _jumpSpeed;
+    public void Jump2D()
+    {
+        if (_onGround_2D || jumpPhase_2D < maxAirJumps_2D)
+        {
+            jumpPhase_2D++;
+            float _jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * jumpHeight_2D);
+            if (velocity_2D.y > 0)
+            {
+                _jumpSpeed = Mathf.Max(_jumpSpeed - velocity_2D.y, 0f);
             }
+
+            velocity_2D.y += _jumpSpeed;
         }
     }
 

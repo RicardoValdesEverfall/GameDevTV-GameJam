@@ -238,7 +238,7 @@ MonoBehaviour:
   maxSpeed_2D: 45
   maxAcceleration_2D: 55
   maxAirAcceleration_2D: 55
-  jumpHeight_2D: 40
+  jumpHeight_2D: 1000
   upwardMultiplier_2D: 15
   downwardMultiplier_2D: 15
   maxAirJumps_2D: 3
