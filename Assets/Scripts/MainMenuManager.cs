@@ -74,6 +74,11 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
+    public void GameOver()
+    {
+
+    }
+
     public void ExitGame()
     {
         Application.Quit();

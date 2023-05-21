@@ -72,36 +72,26 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        /*switch (PlayerCurrentState)
+        switch (PlayerCurrentState)
         {
             case PlayerState.is2D:
+                if (!consoleStatus) { HandleConsole("OpenConsole"); consoleStatus = true; }
+
                 Handle2DInput();
-                ResetCamera();
+                if (Input.GetMouseButton(2))
+                {
+                    HandleRotation();
+                    Handle3DInput();
+                }
+                else { ResetCamera(); }
                 break;
             case PlayerState.is3D:
+                if (consoleStatus) { HandleConsole("CloseConsole"); consoleStatus = false; }
                 HandleRotation();
                 Handle3DInput();
                 break;
-        }*/
-
-        if (PlayerCurrentState == PlayerState.is2D)
-        { 
-            if (!consoleStatus) { HandleConsole("OpenConsole"); consoleStatus = true; }
-
-            Handle2DInput();
-            if (Input.GetMouseButton(2))
-            {
-                HandleRotation();
-                Handle3DInput();
-            }
-            else { ResetCamera(); }
-        }
-
-        if (PlayerCurrentState == PlayerState.is3D)
-        {
-            if (consoleStatus) { HandleConsole("CloseConsole"); consoleStatus = false; }
-            HandleRotation();
-            Handle3DInput();
+            case PlayerState.isDead:
+                break;
         }
     }
 
