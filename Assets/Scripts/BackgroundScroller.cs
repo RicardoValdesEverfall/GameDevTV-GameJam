@@ -11,7 +11,7 @@ public class BackgroundScroller : MonoBehaviour
 
     private RectTransform rt;
 
-    private float length;
+    //private float length;
     private float startPos;
 
    
@@ -20,7 +20,7 @@ public class BackgroundScroller : MonoBehaviour
     {
         if (_environmentCamera_2D == null) { _environmentCamera_2D = GameObject.FindGameObjectWithTag("2DRenderer").GetComponent<Camera>(); }
         startPos = transform.position.x;
-        length = 1920f;
+        //length = 1920f;
 
         rt = this.GetComponent<RectTransform>();
     }

@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("3D Attributes")]
     [SerializeField] private Transform cameraTransform_3D;
+    [SerializeField, Range(1, 10)] public int CameraSensitivity_3D;
 
     private Vector2 playerInput_3D;
     private Vector3 rotateValue_3D;
@@ -131,11 +132,16 @@ public class PlayerController : MonoBehaviour
 
     private void HandleRotation()
     {
-        playerInput_3D.y = Input.GetAxis("Mouse X");
-        playerInput_3D.x = Input.GetAxis("Mouse Y");
+        playerInput_3D.y = Input.GetAxis("Mouse X") * CameraSensitivity_3D;
+        playerInput_3D.x = Input.GetAxis("Mouse Y") * CameraSensitivity_3D;
 
-        rotateValue_3D = new Vector3(playerInput_3D.x, playerInput_3D.y * -1, 0);
-        cameraTransform_3D.eulerAngles = cameraTransform_3D.eulerAngles - rotateValue_3D;
+        rotateValue_3D.y -= playerInput_3D.y;
+        rotateValue_3D.x -= playerInput_3D.x;
+
+        rotateValue_3D.x = Mathf.Clamp(rotateValue_3D.x, -90f, 45f);
+        rotateValue_3D.y = Mathf.Clamp(rotateValue_3D.y, -90f, 45f);
+
+        cameraTransform_3D.rotation = Quaternion.Euler(rotateValue_3D);
     }
 
     public void Handle2DInput()
