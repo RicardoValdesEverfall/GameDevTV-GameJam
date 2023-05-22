@@ -99,23 +99,7 @@ public class PlayerController : MonoBehaviour
     {
         if (PlayerCurrentState == PlayerState.is2D)
         {
-            _onGround_2D = environmentGround_2D.OnGround;
-            if (_onGround_2D) { jumpPhase_2D = 0; }
-
-            velocity_2D = playerBody_2D.velocity;
-            acceleration_2D = environmentGround_2D ? maxAcceleration_2D : maxAirAcceleration_2D;
-            maxSpeedChange_2D = acceleration_2D * Time.deltaTime;
-            velocity_2D.x = Mathf.MoveTowards(velocity_2D.x, desiredVelocity_2D.x, maxSpeedChange_2D);
-
-            if(desiredJump) { desiredJump = false; Jump2D(); }
-
-            if (playerBody_2D.velocity.y > 0) { playerBody_2D.gravityScale = upwardMultiplier_2D; }
-            else if (playerBody_2D.velocity.y > 0) { playerBody_2D.gravityScale = downwardMultiplier_2D; }
-            else if (playerBody_2D.velocity.y == 0) { playerBody_2D.gravityScale = defaultGravityScale_2D; }
-
-
-
-            playerBody_2D.velocity = velocity_2D;
+            
         }
         else { return; }
     }
@@ -136,33 +120,11 @@ public class PlayerController : MonoBehaviour
 
     public void Handle2DInput()
     {
-        playerInput_2D.x = Input.GetAxisRaw("Horizontal");
-        foreach (BackgroundScroller scroller in BackgroundScroller_2D) { scroller.ApplyScroll(playerInput_2D.x); }
-
-        playerDir_2D.x = playerInput_2D.x;
-        desiredVelocity_2D = new Vector2(playerDir_2D.x, 0f) * Mathf.Max(maxSpeed_2D - environmentGround_2D.Friction, 0f);
-
-        desiredJump |= Input.GetKeyDown(KeyCode.Space);
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             PlayerCurrentState = PlayerState.is3D;
             HandleConsole("CloseConsole");
-        }
-    }
-
-    public void Jump2D()
-    {
-        if (_onGround_2D || jumpPhase_2D < maxAirJumps_2D)
-        {
-            jumpPhase_2D++;
-            float _jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * jumpHeight_2D);
-            if (velocity_2D.y > 0)
-            {
-                _jumpSpeed = Mathf.Max(_jumpSpeed - velocity_2D.y, 0f);
-            }
-
-            velocity_2D.y += _jumpSpeed;
         }
     }
 
