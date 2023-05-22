@@ -29,31 +29,18 @@ public class PlayerController : MonoBehaviour
     [Header("2D Attributes")]
     
     [SerializeField] public GameObject PlayerGameObject_2D;
-    [SerializeField] private BackgroundScroller[] BackgroundScroller_2D;
-    [SerializeField, Range(0f, 100f)] private float maxSpeed_2D;
-    [SerializeField, Range(0f, 100f)] private float maxAcceleration_2D;
-    [SerializeField, Range(0f, 100f)] private float maxAirAcceleration_2D;
+    [SerializeField] private GameObject PlayerCrabBodyObj_2D;
+    [SerializeField] private Transform CrabBody_2D;
+    [SerializeField, Range(10f, 100f)] private float maxSpeed_2D;
+    [SerializeField, Range(100f, 200f)] private float rotationSpeed_2D;
+    [SerializeField, Range(5f, 10f)] private float crabBodyOffset_2D;
 
-    [SerializeField, Range(10f, 100f)] private int jumpHeight_2D;
-    [SerializeField, Range(0f, 30f)] private float upwardMultiplier_2D;
-    [SerializeField, Range(0f, 30f)] private float downwardMultiplier_2D;
-    [SerializeField, Range(0f, 3f)] private int maxAirJumps_2D;
-    [SerializeField] private float defaultGravityScale_2D;
-
-    private Vector2 playerDir_2D;
+    private List<GameObject> crabPool = new List<GameObject>();
+    private List<Transform> crabPositionsList = new List<Transform>();
     private Vector2 playerInput_2D;
+    private int numberOfCrabs_2D = 0;
+    private int crabPoolSize = 20;
 
-    private Vector2 velocity_2D;
-    private Vector2 desiredVelocity_2D;
-
-    private Rigidbody2D playerBody_2D;
-    private Ground environmentGround_2D;
-
-    private float maxSpeedChange_2D;
-    private float acceleration_2D;
-    private bool _onGround_2D;
-    private bool desiredJump;
-    private int jumpPhase_2D;
     #endregion
 
     void Start()
@@ -61,13 +48,18 @@ public class PlayerController : MonoBehaviour
         if (_mainMenuRef == null) { _mainMenuRef = GameObject.FindGameObjectWithTag("MainMenu").GetComponent<MainMenuManager>(); }
         if (_mainMenuRef.CurrentState != MainMenuManager.MenuStates.game) { _mainMenuRef.CurrentState = MainMenuManager.MenuStates.game; }
         if (PlayerAnimator == null) { PlayerAnimator = this.GetComponent<Animator>(); }
+        if (PlayerGameObject_2D == null) { PlayerGameObject_2D = GameObject.FindGameObjectWithTag("Player2D"); }
+
         PlayerCurrentState = PlayerState.is2D;
         startingRotation_3D = cameraTransform_3D.localRotation;
+        crabPositionsList.Add(PlayerGameObject_2D.transform);
 
-        if (PlayerGameObject_2D == null) { PlayerGameObject_2D = GameObject.FindGameObjectWithTag("Player2D"); }
-        //if (BackgroundScroller_2D == null) { BackgroundScroller_2D = GameObject.FindGameObjectWithTag("BackgroundController").GetComponent<BackgroundScroller>(); }
-        if (playerBody_2D == null) { playerBody_2D = PlayerGameObject_2D.GetComponent<Rigidbody2D>(); }
-        if (environmentGround_2D == null) { environmentGround_2D = PlayerGameObject_2D.GetComponent<Ground>(); }
+        for(int i = 0; i < crabPoolSize; i++)
+        {
+            GameObject crabBody = Instantiate(PlayerCrabBodyObj_2D, CrabBody_2D);
+            crabBody.SetActive(false);
+            crabPool.Add(crabBody);
+        }
     }
 
     void Update()
@@ -76,7 +68,7 @@ public class PlayerController : MonoBehaviour
         {
             case PlayerState.is2D:
                 if (!consoleStatus) { HandleConsole("OpenConsole"); consoleStatus = true; }
-
+                Handle2DCrabs();
                 Handle2DInput();
                 if (Input.GetMouseButton(2))
                 {
@@ -99,7 +91,8 @@ public class PlayerController : MonoBehaviour
     {
         if (PlayerCurrentState == PlayerState.is2D)
         {
-            
+            PlayerGameObject_2D.transform.Translate(Vector2.up * maxSpeed_2D * Time.fixedDeltaTime, Space.Self);
+            PlayerGameObject_2D.transform.Rotate(Vector3.forward * playerInput_2D.x * rotationSpeed_2D * Time.fixedDeltaTime);
         }
         else { return; }
     }
@@ -120,11 +113,34 @@ public class PlayerController : MonoBehaviour
 
     public void Handle2DInput()
     {
+        playerInput_2D.x = Input.GetAxisRaw("Horizontal");
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             PlayerCurrentState = PlayerState.is3D;
             HandleConsole("CloseConsole");
+        }
+    }
+
+    public void Handle2DPickup()
+    {      
+        crabPool[numberOfCrabs_2D].SetActive(true);
+        crabPositionsList.Add(crabPool[numberOfCrabs_2D].transform);
+        numberOfCrabs_2D++;
+    }
+
+    private void Handle2DCrabs()
+    {
+        for (int i = 0; i < crabPool.Count; i++)
+        {
+          if (crabPool[i].activeSelf)
+          {
+                Vector3 pointToFollow = crabPositionsList[i].position - crabPool[i].transform.position;
+                pointToFollow = pointToFollow / crabBodyOffset_2D;
+
+                crabPool[i].transform.position += pointToFollow * maxSpeed_2D * Time.deltaTime;
+                crabPool[i].transform.rotation = Quaternion.FromToRotation(Vector3.up, pointToFollow);
+          }
         }
     }
 
