@@ -20,6 +20,7 @@ public class AIController : MonoBehaviour
 
     private float timerToAction;
     private float timerToAttack;
+    private int timeSinceLastAttack = 0;
 
     private void Start()
     {
@@ -30,7 +31,6 @@ public class AIController : MonoBehaviour
 
     private void Update()
     {
-        //Every 5s give agents chance to move.
         timerToAction += Time.deltaTime;
         if (timerToAction > TimeToAction)
         {
@@ -63,7 +63,7 @@ public class AIController : MonoBehaviour
                 Debug.Log("Failed Attack!");
             }
 
-            else if (_playerControllerRef.consoleStatus && timerToAttack > 0)
+            if (_playerControllerRef.consoleStatus && timerToAttack > 0)
             {
                 Attack();
             }
@@ -115,6 +115,8 @@ public class AIController : MonoBehaviour
                 break;
         }
 
+        if (index != 3 && isAttacking == false) { timeSinceLastAttack++; }
+        if (timeSinceLastAttack > attackTime) { index = 3; timeSinceLastAttack = 0; }
         MoveAgent(index);
     }
 
