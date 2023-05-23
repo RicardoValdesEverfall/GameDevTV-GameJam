@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
 
     private MainMenuManager _mainMenuRef;
 
-    private bool consoleStatus; //False = closed, True = open.
+    public bool consoleStatus; //False = closed, True = open.
 
     [Header("3D Attributes")]
     [SerializeField] private Transform cameraTransform_3D;
@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
         PlayerCurrentState = PlayerState.is2D;
         startingRotation_3D = cameraTransform_3D.localRotation;
         crabPositionsList.Add(PlayerGameObject_2D.transform);
+        Cursor.lockState = CursorLockMode.Locked;
 
         for(int i = 0; i < crabPoolSize; i++)
         {
@@ -158,12 +159,12 @@ public class PlayerController : MonoBehaviour
         playerInput_3D.x = Input.GetAxis("Mouse Y") * CameraSensitivity_3D;
 
         rotateValue_3D.y -= playerInput_3D.y;
-        rotateValue_3D.x -= playerInput_3D.x;
+        rotateValue_3D.x += playerInput_3D.x;
 
         rotateValue_3D.x = Mathf.Clamp(rotateValue_3D.x, -90f, 45f);
         rotateValue_3D.y = Mathf.Clamp(rotateValue_3D.y, -90f, 45f);
 
-        cameraTransform_3D.rotation = Quaternion.Euler(rotateValue_3D);
+        cameraTransform_3D.rotation = Quaternion.Euler(-rotateValue_3D);
     }
 
     public void ResetCamera()

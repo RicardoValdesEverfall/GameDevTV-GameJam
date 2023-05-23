@@ -12,14 +12,19 @@ public class AIController : MonoBehaviour
 
     [SerializeField] private Transform[] Points;
     [SerializeField] private int index = 0;
+    [SerializeField] private float attackTime;
+    [SerializeField] public bool isAttacking;
 
     [SerializeField] private Transform Agent;
+    [SerializeField] private Light DoorLight;
 
     private float timerToAction;
+    private float timerToAttack;
 
     private void Start()
     {
         MoveAgent(index);
+        DoorLight.gameObject.SetActive(false);
         if (_playerControllerRef == null) { _playerControllerRef = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>(); }
     }
 
@@ -36,19 +41,37 @@ public class AIController : MonoBehaviour
 
     private void UpdateAgents()
     {
-        float moveChance = Random.Range(0.0f, 1.0f);
-        if (moveChance > SuccessFactor)
+        if (!isAttacking)
         {
-            TakeAction();
+            float moveChance = Random.Range(0.0f, 1.0f);
+            if (moveChance > SuccessFactor)
+            {
+                TakeAction();
+            }
+            else { Debug.Log("Failed Action"); }
         }
-        else { Debug.Log("Failed Action"); }
+        else
+        {
+            timerToAttack -= Time.deltaTime;
+            if (timerToAttack < 0)
+            {
+                DoorLight.gameObject.SetActive(false);
+                timerToAttack = attackTime;
+                isAttacking = false;
+                index = 0;
+                MoveAgent(index);
+                Debug.Log("Failed Attack!");
+            }
+
+            else if (_playerControllerRef.consoleStatus && timerToAttack > 0)
+            {
+                Attack();
+            }
+        }
     }
 
     private void TakeAction()
     {
-        //figure out current position.
-        //figure out available moves.
-
         switch (index)
         {
             case 0:
@@ -67,7 +90,7 @@ public class AIController : MonoBehaviour
             case 3:
                 //Check if agent can attack
                 float attackChance = Random.Range(0.0f, 1.0f);
-                if (attackChance > SuccessFactor) { Attack(); }
+                if (attackChance > SuccessFactor) { isAttacking = true; DoorLight.gameObject.SetActive(true); }
                 else { index = 2; MoveAgent(index); }
                 return;
             case 4:
@@ -98,19 +121,12 @@ public class AIController : MonoBehaviour
     private void MoveAgent(int pointIndex)
     {
         Agent.position = Points[pointIndex].position;
-        Debug.Log("Moved");
+        Debug.Log("Moved " + pointIndex.ToString());
     }
 
     private void Attack()
     {
-        bool success = false;
-
-        if (!success)
-        {
-            index = 0;
-            MoveAgent(index);
-        }
-
-        else { _playerControllerRef.PlayerCurrentState = PlayerController.PlayerState.isDead; }
+       _playerControllerRef.PlayerCurrentState = PlayerController.PlayerState.isDead;
+        Debug.Log("Succeeded Attack!");
     }
 }
