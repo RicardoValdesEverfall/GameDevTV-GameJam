@@ -12,6 +12,7 @@ TagManager:
   - BackgroundController
   - 2DRenderer
   - Environment2D
+  - ConsoleAnimator
   layers:
   - Default
   - TransparentFX

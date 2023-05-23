@@ -25,17 +25,21 @@ public class AIController : MonoBehaviour
     private void Start()
     {
         MoveAgent(index);
+        timerToAttack = attackTime;
         DoorLight.gameObject.SetActive(false);
         if (_playerControllerRef == null) { _playerControllerRef = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>(); }
     }
 
     private void Update()
     {
-        timerToAction += Time.deltaTime;
-        if (timerToAction > TimeToAction)
+       if (_playerControllerRef.PlayerCurrentState != PlayerController.PlayerState.isDead)
         {
-            UpdateAgents();
-            timerToAction = 0;
+            timerToAction += Time.deltaTime;
+            if (timerToAction > TimeToAction)
+            {
+                UpdateAgents();
+                timerToAction = 0;
+            }
         }
     }
 
@@ -48,9 +52,9 @@ public class AIController : MonoBehaviour
             {
                 TakeAction();
             }
-            else { Debug.Log("Failed Action"); }
+            //else { Debug.Log("Failed Action"); }
         }
-        else
+        if (isAttacking)
         {
             timerToAttack -= Time.deltaTime;
             if (timerToAttack < 0)
@@ -60,7 +64,7 @@ public class AIController : MonoBehaviour
                 isAttacking = false;
                 index = 0;
                 MoveAgent(index);
-                Debug.Log("Failed Attack!");
+                //Debug.Log("Failed Attack!");
             }
 
             if (_playerControllerRef.consoleStatus && timerToAttack > 0)
@@ -89,8 +93,13 @@ public class AIController : MonoBehaviour
                 break;
             case 3:
                 //Check if agent can attack
-                float attackChance = Random.Range(0.0f, 1.0f);
-                if (attackChance > SuccessFactor) { isAttacking = true; DoorLight.gameObject.SetActive(true); }
+                float attackChance = Random.Range(0f, 1f);
+                if (attackChance > SuccessFactor)
+                { 
+                    DoorLight.gameObject.SetActive(true);
+                    _playerControllerRef.HandleAIWarning();
+                    Invoke("StartAttack", 5f);
+                }
                 else { index = 2; MoveAgent(index); }
                 return;
             case 4:
@@ -115,7 +124,7 @@ public class AIController : MonoBehaviour
                 break;
         }
 
-        if (index != 3 && isAttacking == false) { timeSinceLastAttack++; }
+        if (index != 3 && !isAttacking) { timeSinceLastAttack++; }
         if (timeSinceLastAttack > attackTime) { index = 3; timeSinceLastAttack = 0; }
         MoveAgent(index);
     }
@@ -123,12 +132,15 @@ public class AIController : MonoBehaviour
     private void MoveAgent(int pointIndex)
     {
         Agent.position = Points[pointIndex].position;
-        Debug.Log("Moved " + pointIndex.ToString());
+    }
+
+    private void StartAttack()
+    {
+        isAttacking = true;
     }
 
     private void Attack()
     {
        _playerControllerRef.PlayerCurrentState = PlayerController.PlayerState.isDead;
-        Debug.Log("Succeeded Attack!");
     }
 }

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    //[Header("General Attributes")]
+    
     [SerializeField] public enum PlayerState { is2D, is3D, isDead };
     [SerializeField] public PlayerState PlayerCurrentState;
     [SerializeField] private Animator PlayerAnimator;
+    [SerializeField] private Animator ConsoleAnimator;
 
     private MainMenuManager _mainMenuRef;
 
@@ -19,6 +20,8 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 playerInput_3D;
     private Vector3 rotateValue_3D;
+    private Vector3 cameraStartPosition;
+    private Vector3 cameraPeekOffset;
 
     private Quaternion startingRotation_3D;
 
@@ -49,11 +52,14 @@ public class PlayerController : MonoBehaviour
         if (_mainMenuRef == null) { _mainMenuRef = GameObject.FindGameObjectWithTag("MainMenu").GetComponent<MainMenuManager>(); }
         if (_mainMenuRef.CurrentState != MainMenuManager.MenuStates.game) { _mainMenuRef.CurrentState = MainMenuManager.MenuStates.game; }
         if (PlayerAnimator == null) { PlayerAnimator = this.GetComponent<Animator>(); }
+        if (ConsoleAnimator == null) { ConsoleAnimator = GameObject.FindGameObjectWithTag("ConsoleAnimator").GetComponent<Animator>(); }
         if (PlayerGameObject_2D == null) { PlayerGameObject_2D = GameObject.FindGameObjectWithTag("Player2D"); }
         if (EnvironmentMap_2D == null) { EnvironmentMap_2D = GameObject.FindGameObjectWithTag("Environment2D"); }
 
         PlayerCurrentState = PlayerState.is2D;
         startingRotation_3D = cameraTransform_3D.localRotation;
+        cameraStartPosition = cameraTransform_3D.position;
+        cameraPeekOffset = cameraTransform_3D.position + new Vector3(-0.2f, 0.4f, 0f);
         crabPositionsList.Add(PlayerGameObject_2D.transform);
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -86,6 +92,7 @@ public class PlayerController : MonoBehaviour
                 Handle3DInput();
                 break;
             case PlayerState.isDead:
+                HandleGameOver();
                 break;
         }
     }
@@ -164,17 +171,32 @@ public class PlayerController : MonoBehaviour
         rotateValue_3D.x = Mathf.Clamp(rotateValue_3D.x, -90f, 45f);
         rotateValue_3D.y = Mathf.Clamp(rotateValue_3D.y, -90f, 45f);
 
+        cameraTransform_3D.position = Vector3.MoveTowards(cameraTransform_3D.position, cameraPeekOffset, 3.8f * Time.deltaTime);
         cameraTransform_3D.rotation = Quaternion.Euler(-rotateValue_3D);
+
+        Debug.Log("Rotating Camera");
     }
 
     public void ResetCamera()
     {
         cameraTransform_3D.rotation = Quaternion.Lerp(cameraTransform_3D.rotation, startingRotation_3D, 1.8f * Time.deltaTime);
+        cameraTransform_3D.position = Vector3.MoveTowards(cameraTransform_3D.position, cameraStartPosition, 2.8f * Time.deltaTime);
     }
 
     public void HandleConsole(string animToPlay)
     {
         PlayerAnimator.Play(animToPlay);
+    }
+
+    public void HandleAIWarning()
+    {
+        ConsoleAnimator.Play("EyesMovement");
+    }
+
+    public void HandleGameOver()
+    {
+        PlayerAnimator.Play("GameOver");
+        _mainMenuRef.GameOver();
     }
 
     public void ShowSettingsMenu(int state)
