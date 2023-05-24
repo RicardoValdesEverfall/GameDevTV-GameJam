@@ -13,6 +13,8 @@ TagManager:
   - 2DRenderer
   - Environment2D
   - ConsoleAnimator
+  - Butter
+  - Knife
   layers:
   - Default
   - TransparentFX

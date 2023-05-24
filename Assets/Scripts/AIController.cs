@@ -64,10 +64,9 @@ public class AIController : MonoBehaviour
                 isAttacking = false;
                 index = 0;
                 MoveAgent(index);
-                //Debug.Log("Failed Attack!");
             }
 
-            if (_playerControllerRef.consoleStatus && timerToAttack > 0)
+            else if (_playerControllerRef.consoleStatus && timerToAttack > 0)
             {
                 Attack();
             }
@@ -98,7 +97,7 @@ public class AIController : MonoBehaviour
                 { 
                     DoorLight.gameObject.SetActive(true);
                     _playerControllerRef.HandleAIWarning();
-                    Invoke("StartAttack", 5f);
+                    Invoke("StartAttack", 3f);
                 }
                 else { index = 2; MoveAgent(index); }
                 return;

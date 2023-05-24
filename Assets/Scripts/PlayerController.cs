@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform CrabBody_2D;
     [SerializeField, Range(10f, 100f)] private float maxSpeed_2D;
     [SerializeField, Range(100f, 200f)] private float rotationSpeed_2D;
-    [SerializeField, Range(5f, 10f)] private float crabBodyOffset_2D;
+    [SerializeField, Range(10f, 15f)] private float crabBodyOffset_2D;
 
     private List<GameObject> crabPool = new List<GameObject>();
     private List<Transform> crabPositionsList = new List<Transform>();
@@ -171,6 +171,10 @@ public class PlayerController : MonoBehaviour
         rotateValue_3D.x = Mathf.Clamp(rotateValue_3D.x, -90f, 45f);
         rotateValue_3D.y = Mathf.Clamp(rotateValue_3D.y, -90f, 45f);
 
+        float FOV = cameraTransform_3D.GetComponent<Camera>().fieldOfView;
+        FOV = Mathf.Lerp(FOV, 80f, 8.8f * Time.deltaTime);
+        cameraTransform_3D.GetComponent<Camera>().fieldOfView = FOV;
+
         cameraTransform_3D.position = Vector3.MoveTowards(cameraTransform_3D.position, cameraPeekOffset, 3.8f * Time.deltaTime);
         cameraTransform_3D.rotation = Quaternion.Euler(-rotateValue_3D);
 
@@ -181,6 +185,11 @@ public class PlayerController : MonoBehaviour
     {
         cameraTransform_3D.rotation = Quaternion.Lerp(cameraTransform_3D.rotation, startingRotation_3D, 1.8f * Time.deltaTime);
         cameraTransform_3D.position = Vector3.MoveTowards(cameraTransform_3D.position, cameraStartPosition, 2.8f * Time.deltaTime);
+
+        float FOV = cameraTransform_3D.GetComponent<Camera>().fieldOfView;
+        FOV = Mathf.Lerp(FOV, 60f, 0.8f * Time.deltaTime);
+        cameraTransform_3D.GetComponent<Camera>().fieldOfView = FOV;
+
     }
 
     public void HandleConsole(string animToPlay)

@@ -16,6 +16,45 @@ MonoBehaviour:
   - {fileID: 8699533672307700485}
   - {fileID: 5049696105564867231}
   - {fileID: 4327073952252355092}
+  - {fileID: 1129272263326938394}
+  - {fileID: 7731109108657579397}
+--- !u!114 &1129272263326938394
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3f6f3f7c722b4544b97e3c75840aa33, type: 3}
+  m_Name: AutoExposure
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  filtering:
+    overrideState: 1
+    value: {x: 41.741573, y: 99}
+  minLuminance:
+    overrideState: 1
+    value: 1.58
+  maxLuminance:
+    overrideState: 1
+    value: 4.76
+  keyValue:
+    overrideState: 1
+    value: 16.4
+  eyeAdaptation:
+    overrideState: 1
+    value: 1
+  speedUp:
+    overrideState: 1
+    value: 2
+  speedDown:
+    overrideState: 1
+    value: 1
 --- !u!114 &4327073952252355092
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -94,6 +133,32 @@ MonoBehaviour:
   opacity:
     overrideState: 1
     value: 1
+--- !u!114 &7731109108657579397
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6050e2d5de785ce4d931e4dbdbf2d755, type: 3}
+  m_Name: ChromaticAberration
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  spectralLut:
+    overrideState: 1
+    value: {fileID: 0}
+    defaultState: 1
+  intensity:
+    overrideState: 1
+    value: 0.25
+  fastMode:
+    overrideState: 1
+    value: 0
 --- !u!114 &8699533672307700485
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -106,38 +171,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a79b01ea5641d4aa6daa2e23605641, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1
   intensity:
     overrideState: 1
-    value: 12.5
+    value: 8.72
   threshold:
     overrideState: 1
-    value: 0.9
+    value: 0.76
   softKnee:
     overrideState: 1
-    value: 0.5
+    value: 0
   clamp:
-    overrideState: 0
-    value: 65472
+    overrideState: 1
+    value: 100
   diffusion:
     overrideState: 1
-    value: 7
+    value: 6.4
   anamorphicRatio:
     overrideState: 1
-    value: 0
+    value: -1
   color:
     overrideState: 1
     value: {r: 1, g: 1, b: 1, a: 1}
   fastMode:
-    overrideState: 1
+    overrideState: 0
     value: 0
   dirtTexture:
-    overrideState: 1
+    overrideState: 0
     value: {fileID: 0}
     defaultState: 1
   dirtIntensity:
-    overrideState: 1
+    overrideState: 0
     value: 0
