@@ -26,7 +26,10 @@ public class AIController : MonoBehaviour
     {
         MoveAgent(index);
         timerToAttack = attackTime;
+        //foreach (Light l in DoorLight)
+        // {
         DoorLight.gameObject.SetActive(false);
+       // }
         if (_playerControllerRef == null) { _playerControllerRef = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>(); }
     }
 
