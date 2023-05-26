@@ -35,9 +35,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject PlayerCrabBodyObj_2D;
     [SerializeField] private GameObject EnvironmentMap_2D;
     [SerializeField] private Transform CrabBody_2D;
-    [SerializeField, Range(10f, 100f)] private float maxSpeed_2D;
+    [SerializeField, Range(0f, 100f)] private float maxSpeed_2D;
     [SerializeField, Range(100f, 200f)] private float rotationSpeed_2D;
-    [SerializeField, Range(10f, 15f)] private float crabBodyOffset_2D;
+    [SerializeField] private float crabBodyOffset_2D;
 
     private List<GameObject> crabPool = new List<GameObject>();
     private List<Transform> crabPositionsList = new List<Transform>();
@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
     {
         if (PlayerCurrentState == PlayerState.is2D)
         {
-            PlayerGameObject_2D.transform.Translate(Vector2.up * maxSpeed_2D * Time.fixedDeltaTime, Space.Self);
+            //PlayerGameObject_2D.transform.Translate(Vector2.up * maxSpeed_2D * Time.fixedDeltaTime, Space.Self);
             PlayerGameObject_2D.transform.Rotate(Vector3.forward * playerInput_2D.x * rotationSpeed_2D * Time.fixedDeltaTime);
 
             Vector3 playerDir = PlayerGameObject_2D.transform.up;
@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour
     {
         playerInput_2D.x = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Tab) && consoleStatus)
         {
             PlayerCurrentState = PlayerState.is3D;
             HandleConsole("CloseConsole");
@@ -145,12 +145,21 @@ public class PlayerController : MonoBehaviour
         {
           if (crabPool[i].activeSelf)
           {
-                Vector3 pointToFollow = crabPositionsList[i].position - crabPool[i].transform.position;
+                /*Vector3 pointToFollow = crabPositionsList[i].position - crabPool[i].transform.position;
                 pointToFollow = pointToFollow / crabBodyOffset_2D;
 
-                crabPool[i].transform.position += pointToFollow * maxSpeed_2D * Time.deltaTime;
-                crabPool[i].transform.rotation = Quaternion.FromToRotation(Vector3.up, pointToFollow);
-          }
+                crabPool[i].transform.position = pointToFollow;
+                crabPool[i].transform.rotation = Quaternion.FromToRotation(Vector3.up, pointToFollow);*/
+
+
+                // Vector3 pointToFollow = crabPositionsList[i].transform.
+                //crabPool[i].transform.right = crabPositionsList[i].transform.right;
+
+                Vector3 pointToFollow = crabPositionsList[i].transform.position - (transform.InverseTransformDirection(crabPositionsList[i].up * crabBodyOffset_2D));
+                crabPool[i].transform.position = pointToFollow;
+                crabPool[i].transform.rotation = Quaternion.Lerp(crabPool[i].transform.rotation, crabPositionsList[i].rotation, 6.8f * Time.deltaTime);/*------------------------------------------------ NEW CODE*/
+
+            }
         }
     }
 
