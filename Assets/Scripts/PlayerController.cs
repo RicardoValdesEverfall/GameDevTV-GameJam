@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Animator ConsoleAnimator;
 
     private MainMenuManager _mainMenuRef;
-
+    private AudioController _audioControllerRef;
     public bool consoleStatus; //False = closed, True = open.
 
     [Header("3D Attributes")]
@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
         if (ConsoleAnimator == null) { ConsoleAnimator = GameObject.FindGameObjectWithTag("ConsoleAnimator").GetComponent<Animator>(); }
         if (PlayerGameObject_2D == null) { PlayerGameObject_2D = GameObject.FindGameObjectWithTag("Player2D"); }
         if (EnvironmentMap_2D == null) { EnvironmentMap_2D = GameObject.FindGameObjectWithTag("Environment2D"); }
+        if (_audioControllerRef == null) { _audioControllerRef = this.GetComponent<AudioController>(); }
 
         PlayerCurrentState = PlayerState.is2D;
         startingRotation_3D = cameraTransform_3D.localRotation;
@@ -81,10 +82,11 @@ public class PlayerController : MonoBehaviour
                 Handle2DInput();
                 if (Input.GetMouseButton(2))
                 {
+                    _audioControllerRef.isLooking = true;
                     HandleRotation();
                     Handle3DInput();
                 }
-                else { ResetCamera(); }
+                else { ResetCamera(); _audioControllerRef.isLooking = false; }
                 break;
             case PlayerState.is3D:
                 if (consoleStatus) { HandleConsole("CloseConsole"); consoleStatus = false; }

@@ -11,7 +11,6 @@ public class AIController : MonoBehaviour
     [SerializeField] private PlayerController _playerControllerRef;
 
     [SerializeField] private Transform[] Points;
-    [SerializeField] private int index = 0;
     [SerializeField] private float attackTime;
     [SerializeField] public bool isAttacking;
 
@@ -21,6 +20,7 @@ public class AIController : MonoBehaviour
     private float timerToAction;
     private float timerToAttack;
     private int timeSinceLastAttack = 0;
+    private int index = 0;
 
     private void Start()
     {
@@ -35,7 +35,7 @@ public class AIController : MonoBehaviour
 
     private void Update()
     {
-       if (_playerControllerRef.PlayerCurrentState != PlayerController.PlayerState.isDead)
+        if (_playerControllerRef.PlayerCurrentState != PlayerController.PlayerState.isDead)
         {
             timerToAction += Time.deltaTime;
             if (timerToAction > TimeToAction)
@@ -44,23 +44,11 @@ public class AIController : MonoBehaviour
                 timerToAction = 0;
             }
         }
-    }
-
-    private void UpdateAgents()
-    {
-        if (!isAttacking)
-        {
-            float moveChance = Random.Range(0.0f, 1.0f);
-            if (moveChance > SuccessFactor)
-            {
-                TakeAction();
-            }
-            //else { Debug.Log("Failed Action"); }
-        }
+        
         if (isAttacking)
         {
             timerToAttack -= Time.deltaTime;
-            if (timerToAttack < 0)
+            if (timerToAttack < 0 && _playerControllerRef.PlayerCurrentState != PlayerController.PlayerState.isDead)
             {
                 DoorLight.gameObject.SetActive(false);
                 timerToAttack = attackTime;
@@ -73,6 +61,18 @@ public class AIController : MonoBehaviour
             {
                 Attack();
             }
+        }
+    }
+
+    private void UpdateAgents()
+    {
+        if (!isAttacking)
+        {
+            float moveChance = Random.Range(0.0f, 1.0f);
+            if (moveChance > SuccessFactor)
+            {
+                TakeAction();
+            }    
         }
     }
 

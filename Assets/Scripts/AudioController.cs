@@ -15,6 +15,7 @@ public class AudioController : MonoBehaviour
     [SerializeField, Range(0.0f, 0.8f)] private float MinVolume3D;
 
     private PlayerController _playerControllerRef;
+    public bool isLooking;
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +32,7 @@ public class AudioController : MonoBehaviour
             Handle3DAudio(-1);
         }
 
-        if (_playerControllerRef.PlayerCurrentState == PlayerController.PlayerState.is3D)
+        if (_playerControllerRef.PlayerCurrentState == PlayerController.PlayerState.is3D || isLooking)
         {
             Handle2DAudio(-1);
             Handle3DAudio(1);
