@@ -1387,13 +1387,13 @@ MonoBehaviour:
     overrideState: 1
     value: 1
   eyeAdaptation:
-    overrideState: 1
+    overrideState: 0
     value: 0
   speedUp:
-    overrideState: 1
+    overrideState: 0
     value: 2
   speedDown:
-    overrideState: 1
+    overrideState: 0
     value: 1
 --- !u!114 &11400000
 MonoBehaviour:
