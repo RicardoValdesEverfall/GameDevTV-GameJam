@@ -11,11 +11,14 @@ public class AIController : MonoBehaviour
     [SerializeField] private PlayerController _playerControllerRef;
 
     [SerializeField] private Transform[] Points;
+    [SerializeField] private AudioClip[] SFXforPoints;
     [SerializeField] private float attackTime;
     [SerializeField] public bool isAttacking;
 
     [SerializeField] private Transform Agent;
     [SerializeField] private Light DoorLight;
+
+    private AudioController _audioControllerRef;
 
     private float timerToAction;
     private float timerToAttack;
@@ -31,6 +34,7 @@ public class AIController : MonoBehaviour
         DoorLight.gameObject.SetActive(false);
        // }
         if (_playerControllerRef == null) { _playerControllerRef = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>(); }
+        _audioControllerRef = _playerControllerRef.GetComponent<AudioController>();
     }
 
     private void Update()
@@ -144,5 +148,10 @@ public class AIController : MonoBehaviour
     private void Attack()
     {
        _playerControllerRef.PlayerCurrentState = PlayerController.PlayerState.isDead;
+    }
+
+    private void PlaySFX(int index)
+    {
+        AudioSource.PlayClipAtPoint(SFXforPoints[index], Points[index].position, _audioControllerRef.Environment3D.volume);
     }
 }

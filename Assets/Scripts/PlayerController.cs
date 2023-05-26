@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 
     private MainMenuManager _mainMenuRef;
     private AudioController _audioControllerRef;
+    private GameController2D _gameControllerRef;
     public bool consoleStatus; //False = closed, True = open.
 
     [Header("3D Attributes")]
@@ -55,6 +56,7 @@ public class PlayerController : MonoBehaviour
         if (ConsoleAnimator == null) { ConsoleAnimator = GameObject.FindGameObjectWithTag("ConsoleAnimator").GetComponent<Animator>(); }
         if (PlayerGameObject_2D == null) { PlayerGameObject_2D = GameObject.FindGameObjectWithTag("Player2D"); }
         if (EnvironmentMap_2D == null) { EnvironmentMap_2D = GameObject.FindGameObjectWithTag("Environment2D"); }
+        if (_gameControllerRef == null) { _gameControllerRef = EnvironmentMap_2D.GetComponent<GameController2D>(); }
         if (_audioControllerRef == null) { _audioControllerRef = this.GetComponent<AudioController>(); }
 
         PlayerCurrentState = PlayerState.is2D;
@@ -78,6 +80,7 @@ public class PlayerController : MonoBehaviour
         {
             case PlayerState.is2D:
                 if (!consoleStatus) { HandleConsole("OpenConsole"); consoleStatus = true; }
+                _gameControllerRef.canSpawn = consoleStatus;
                 Handle2DCrabs();
                 Handle2DInput();
                 if (Input.GetMouseButton(2))
@@ -90,6 +93,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.is3D:
                 if (consoleStatus) { HandleConsole("CloseConsole"); consoleStatus = false; }
+                _gameControllerRef.canSpawn = consoleStatus;
                 HandleRotation();
                 Handle3DInput();
                 break;
@@ -145,19 +149,9 @@ public class PlayerController : MonoBehaviour
         {
           if (crabPool[i].activeSelf)
           {
-                /*Vector3 pointToFollow = crabPositionsList[i].position - crabPool[i].transform.position;
-                pointToFollow = pointToFollow / crabBodyOffset_2D;
-
-                crabPool[i].transform.position = pointToFollow;
-                crabPool[i].transform.rotation = Quaternion.FromToRotation(Vector3.up, pointToFollow);*/
-
-
-                // Vector3 pointToFollow = crabPositionsList[i].transform.
-                //crabPool[i].transform.right = crabPositionsList[i].transform.right;
-
                 Vector3 pointToFollow = crabPositionsList[i].transform.position - (transform.InverseTransformDirection(crabPositionsList[i].up * crabBodyOffset_2D));
                 crabPool[i].transform.position = pointToFollow;
-                crabPool[i].transform.rotation = Quaternion.Lerp(crabPool[i].transform.rotation, crabPositionsList[i].rotation, 6.8f * Time.deltaTime);/*------------------------------------------------ NEW CODE*/
+                crabPool[i].transform.rotation = Quaternion.Lerp(crabPool[i].transform.rotation, crabPositionsList[i].rotation, 6.8f * Time.deltaTime);
 
             }
         }
