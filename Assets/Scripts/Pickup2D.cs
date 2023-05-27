@@ -24,7 +24,12 @@ public class Pickup2D : MonoBehaviour
         if (col.CompareTag("Player2D"))
         {
             _playerControllerRef.Handle2DPickup(ID);
-            this.gameObject.SetActive(false);
+            Destroy(this.gameObject);
         }
+    }
+
+    public void SetStartPosition(Vector3 position)
+    {
+        this.transform.position = position;
     }
 }

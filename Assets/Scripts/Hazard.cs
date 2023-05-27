@@ -5,15 +5,16 @@ using UnityEngine;
 public class Hazard : MonoBehaviour
 {
     [SerializeField] public int ID; //0 = butter, 1 = Cleaver
+    [SerializeField] private float SelfDestructTime;
 
     public float MoveSpeed;
     private Vector3 target;
-    private PlayerController _playerControllerRef;
+    public PlayerController _playerControllerRef;
 
     // Start is called before the first frame update
     void Start()
     {
-        _playerControllerRef = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        StartCoroutine(SelfDestruct());
     }
 
     // Update is called once per frame
@@ -34,6 +35,12 @@ public class Hazard : MonoBehaviour
     public void SetTargetPosition(Vector3 Target)
     {
         target = Target;
+    }
+
+    private IEnumerator SelfDestruct()
+    {
+        yield return new WaitForSeconds(SelfDestructTime);
+        Destroy(this.gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D col)

@@ -5,15 +5,27 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
+    public static MainMenuManager InstanceOfMM { get { return _instance; } }
+    private static MainMenuManager _instance;
+
     [SerializeField] public enum MenuStates { main, game }
     [SerializeField] public MenuStates CurrentState;
 
-    private GameObject StartMenuParent;
-    private GameObject SettingsMenuParent;
+    [SerializeField] private GameObject StartMenuParent;
+    [SerializeField] private GameObject SettingsMenuParent;
 
     private Animator mainMenuAnimator;
 
-    void Start()
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else { _instance = this; }
+    }
+
+    private void Start()
     {
         DontDestroyOnLoad(this.gameObject);
 
@@ -25,7 +37,7 @@ public class MainMenuManager : MonoBehaviour
         if (SettingsMenuParent == null) { SettingsMenuParent = GameObject.FindGameObjectWithTag("SettingsSubMenu"); }
     }
 
-    void Update()
+    private void Update()
     {
         switch (CurrentState)
         {

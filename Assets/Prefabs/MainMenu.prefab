@@ -1660,6 +1660,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentState: 0
+  StartMenuParent: {fileID: 4572064035027906059}
+  SettingsMenuParent: {fileID: 4572064034798650762}
 --- !u!95 &4572064036046200294
 Animator:
   serializedVersion: 5

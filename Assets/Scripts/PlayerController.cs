@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
     private List<GameObject> crabPool = new List<GameObject>();
     private List<Transform> crabPositionsList = new List<Transform>();
     private Vector2 playerInput_2D;
-    private int numberOfCrabs_2D = 0;
+    public int numberOfCrabs_2D = 0;
     private int crabPoolSize = 25;
     public int playerLives_2D = 3;
 
@@ -82,9 +82,14 @@ public class PlayerController : MonoBehaviour
         {
             case PlayerState.is2D:
                 if (!consoleStatus) { HandleConsole("OpenConsole"); consoleStatus = true; }
-                _gameControllerRef.canSpawn = consoleStatus;
-                Handle2DCrabs();
-                Handle2DInput();
+                if (playerLives_2D > 0)
+                {
+                    _gameControllerRef.canSpawn = consoleStatus;
+                    Handle2DCrabs();
+                    Handle2DInput();
+                }
+
+
                 if (Input.GetMouseButton(2))
                 {
                     _audioControllerRef.isLooking = true;
@@ -107,9 +112,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (PlayerCurrentState == PlayerState.is2D)
+        if (PlayerCurrentState == PlayerState.is2D && playerLives_2D > 0)
         {
-            //PlayerGameObject_2D.transform.Translate(Vector2.up * maxSpeed_2D * Time.fixedDeltaTime, Space.Self);
             PlayerGameObject_2D.transform.Rotate(Vector3.forward * playerInput_2D.x * rotationSpeed_2D * Time.fixedDeltaTime);
 
             Vector3 playerDir = PlayerGameObject_2D.transform.up;
@@ -163,17 +167,16 @@ public class PlayerController : MonoBehaviour
     {
         int crabsToLose = 5 + (5 * ID);
 
-        if (ID == 1)
+        for (int i = numberOfCrabs_2D; i > crabsToLose; i--)
         {
-            for (int i = crabPool.Count; i > crabsToLose; i--)
-            {
-                crabPool[i].SetActive(false);
-            }
+            crabPool[i].SetActive(false);
         }
 
-        if (crabsToLose > crabPositionsList.Count - 1)
+        if (crabsToLose > numberOfCrabs_2D - 1)
         {
             playerLives_2D--;
+            PlayerGameObject_2D.GetComponent<Player2D>().LoseALife();
+
             if (playerLives_2D == 0)
             {
                 PlayerGameObject_2D.GetComponent<Animator>().Play("2DGameOver");

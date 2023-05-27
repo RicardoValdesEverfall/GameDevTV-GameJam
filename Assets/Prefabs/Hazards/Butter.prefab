@@ -173,7 +173,7 @@ RectTransform:
   m_GameObject: {fileID: 2732388532982631640}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -5}
-  m_LocalScale: {x: 1, y: 1.8909, z: 1}
+  m_LocalScale: {x: 1.4239, y: 1.8909, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2732388531599539920}
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c778dc6559a0d5c47ba025dd0aeb53cc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 19f2829774740fa4fbbd6272a5395fc2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -235,4 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffffc93df42735c44b0e6be860d0888d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ID: 0
+  SelfDestructTime: 0
   MoveSpeed: 4.8
+  _playerControllerRef: {fileID: 0}

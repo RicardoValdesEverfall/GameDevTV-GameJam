@@ -5,6 +5,7 @@ using UnityEngine;
 public class AudioController : MonoBehaviour
 {
     [SerializeField] private float step;
+    [SerializeField] private AudioClip[] Music2D;
 
     [SerializeField] public AudioSource Environment2D;
     [SerializeField, Range(0.0f, 1.0f)] private float MaxVolume2D;
@@ -17,17 +18,23 @@ public class AudioController : MonoBehaviour
     private PlayerController _playerControllerRef;
     public bool isLooking;
 
-    // Start is called before the first frame update
     void Start()
     {
         if (_playerControllerRef == null) { _playerControllerRef = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>(); }
     }
 
-    // Update is called once per frame
     void Update()
     {
+
+
         if (_playerControllerRef.PlayerCurrentState == PlayerController.PlayerState.is2D)
         {
+            if (_playerControllerRef.numberOfCrabs_2D >= 10)
+            {
+                //Environment2D.clip = Music2D[1];
+            }
+            else { } //Environment2D.clip = Music2D[0];
+
             Handle2DAudio(1);
             Handle3DAudio(-1);
         }
@@ -36,6 +43,13 @@ public class AudioController : MonoBehaviour
         {
             Handle2DAudio(-1);
             Handle3DAudio(1);
+        }
+
+        if (_playerControllerRef.PlayerCurrentState == PlayerController.PlayerState.isDead)
+        {
+            //Environment2D.clip = Music2D[2];
+            Handle2DAudio(1);
+            Handle3DAudio(-1);
         }
     }
 
