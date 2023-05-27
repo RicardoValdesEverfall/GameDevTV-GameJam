@@ -150,8 +150,8 @@ public class PlayerController : MonoBehaviour
           if (crabPool[i].activeSelf)
           {
                 Vector3 pointToFollow = crabPositionsList[i].transform.position - (transform.InverseTransformDirection(crabPositionsList[i].up * crabBodyOffset_2D));
-                crabPool[i].transform.position = pointToFollow;
-                crabPool[i].transform.rotation = Quaternion.Lerp(crabPool[i].transform.rotation, crabPositionsList[i].rotation, 6.8f * Time.deltaTime);
+                crabPool[i].transform.position = Vector3.Lerp(crabPool[i].transform.position, pointToFollow, (7.8f + 7.8f * i) * Time.deltaTime);
+                crabPool[i].transform.rotation = Quaternion.Lerp(crabPool[i].transform.rotation, crabPositionsList[i].rotation, 4.8f * Time.deltaTime);
 
             }
         }
