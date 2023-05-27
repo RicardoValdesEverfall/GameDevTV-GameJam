@@ -35,14 +35,14 @@ public class MainMenuManager : MonoBehaviour
 
             case MenuStates.game:
                 StartMenuParent.SetActive(false);
-                SettingsMenu(2);
+               // SettingsMenu(2);
                 break;
         }
     }
 
-    public void LoadGameScene()
+    public void LoadGameScene(int index)
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene(index);
     }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -76,7 +76,8 @@ public class MainMenuManager : MonoBehaviour
 
     public void GameOver()
     {
-
+        mainMenuAnimator.Play("GameOver");
+        
     }
 
     public void ExitGame()

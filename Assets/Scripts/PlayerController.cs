@@ -44,7 +44,8 @@ public class PlayerController : MonoBehaviour
     private List<Transform> crabPositionsList = new List<Transform>();
     private Vector2 playerInput_2D;
     private int numberOfCrabs_2D = 0;
-    private int crabPoolSize = 20;
+    private int crabPoolSize = 25;
+    public int playerLives_2D = 3;
 
     #endregion
 
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour
         if (_gameControllerRef == null) { _gameControllerRef = EnvironmentMap_2D.GetComponent<GameController2D>(); }
         if (_audioControllerRef == null) { _audioControllerRef = this.GetComponent<AudioController>(); }
 
+        _mainMenuRef.CurrentState = MainMenuManager.MenuStates.game;
         PlayerCurrentState = PlayerState.is2D;
         startingRotation_3D = cameraTransform_3D.localRotation;
         cameraStartPosition = cameraTransform_3D.position;
@@ -157,6 +159,33 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Handle2DHazard(int ID) //ID = 1 is butter, ID = 0 is Cleaver. The lower the number the more crabs the player will lose.
+    {
+        int crabsToLose = 5 + (5 * ID);
+
+        if (ID == 1)
+        {
+            for (int i = crabPool.Count; i > crabsToLose; i--)
+            {
+                crabPool[i].SetActive(false);
+            }
+        }
+
+        if (crabsToLose > crabPositionsList.Count - 1)
+        {
+            playerLives_2D--;
+            if (playerLives_2D == 0)
+            {
+                PlayerGameObject_2D.GetComponent<Animator>().Play("2DGameOver");
+            }
+        }
+    }
+
+    public void Handle2DGameOver()
+    {
+
+    }
+
     public void Handle3DInput()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -173,8 +202,8 @@ public class PlayerController : MonoBehaviour
         rotateValue_3D.y -= playerInput_3D.y;
         rotateValue_3D.x += playerInput_3D.x;
 
-        rotateValue_3D.x = Mathf.Clamp(rotateValue_3D.x, -90f, 45f);
-        rotateValue_3D.y = Mathf.Clamp(rotateValue_3D.y, -90f, 45f);
+       // rotateValue_3D.x = Mathf.Clamp(rotateValue_3D.x, -90f, 45f);
+        //rotateValue_3D.y = Mathf.Clamp(rotateValue_3D.y, -90f, 45f);
 
         float FOV = cameraTransform_3D.GetComponent<Camera>().fieldOfView;
         FOV = Mathf.Lerp(FOV, 80f, 8.8f * Time.deltaTime);
@@ -210,11 +239,16 @@ public class PlayerController : MonoBehaviour
     public void HandleGameOver()
     {
         PlayerAnimator.Play("GameOver");
-        _mainMenuRef.GameOver();
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     public void ShowSettingsMenu(int state)
     {
         _mainMenuRef.SettingsMenu(state);
+    }
+
+    public void ShowGameOverMenu()
+    {
+        _mainMenuRef.GameOver();
     }
 }

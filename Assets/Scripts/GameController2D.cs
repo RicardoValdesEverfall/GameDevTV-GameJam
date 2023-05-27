@@ -58,7 +58,7 @@ public class GameController2D : MonoBehaviour
         Vector3 spawnPos = new Vector3(mapWidth * side, Random.Range((mapHeight * side), mapHeight * -side), 0f);
 
         newHazard.SetStartPosition(spawnPos);
-        newHazard.SetTargetPosition(-spawnPos);
+        if (newHazard.ID == 0) { newHazard.SetTargetPosition(-spawnPos); }
     }
 
     private void SpawnPickup()
