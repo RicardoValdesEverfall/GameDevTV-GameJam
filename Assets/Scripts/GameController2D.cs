@@ -98,4 +98,9 @@ public class GameController2D : MonoBehaviour
 
         pickup.SetStartPosition(spawnPos);
     }
+
+    public void RestartGame()
+    {
+
+    }
 }

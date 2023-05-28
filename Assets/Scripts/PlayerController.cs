@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.PostProcessing;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,10 +11,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public PlayerState PlayerCurrentState;
     [SerializeField] private Animator PlayerAnimator;
     [SerializeField] private Animator ConsoleAnimator;
+    [SerializeField] private PostProcessVolume Postprocess_3D;
 
     private MainMenuManager _mainMenuRef;
     private AudioController _audioControllerRef;
     private GameController2D _gameControllerRef;
+    private DepthOfField DoF;
     public bool consoleStatus; //False = closed, True = open.
 
     [Header("3D Attributes")]
@@ -61,6 +65,7 @@ public class PlayerController : MonoBehaviour
         if (_gameControllerRef == null) { _gameControllerRef = EnvironmentMap_2D.GetComponent<GameController2D>(); }
         if (_audioControllerRef == null) { _audioControllerRef = this.GetComponent<AudioController>(); }
 
+        //Postprocess_3D.profile.TryGetSettings<DepthOfField>(out DoF);
         _mainMenuRef.CurrentState = MainMenuManager.MenuStates.game;
         PlayerCurrentState = PlayerState.is2D;
         startingRotation_3D = cameraTransform_3D.localRotation;
@@ -90,21 +95,23 @@ public class PlayerController : MonoBehaviour
                     Handle2DInput();
                 }
 
-
                 if (Input.GetMouseButton(2))
                 {
                     _audioControllerRef.isLooking = true;
                     HandleRotation();
                     Handle3DInput();
                 }
-                else { ResetCamera(); _audioControllerRef.isLooking = false; }
+                else { ResetCamera(); _audioControllerRef.isLooking = false; /*Postprocess_3D.profile.AddSettings(DoF);*/ }
                 break;
+
             case PlayerState.is3D:
-                if (consoleStatus) { HandleConsole("CloseConsole"); consoleStatus = false; }
+                if (consoleStatus) { HandleConsole("CloseConsole"); consoleStatus = false; /*Postprocess_3D.profile.RemoveSettings<DepthOfField>();*/
+                }
                 _gameControllerRef.canSpawn = consoleStatus;
                 HandleRotation();
                 Handle3DInput();
                 break;
+
             case PlayerState.isDead:
                 HandleGameOver();
                 break;
@@ -169,23 +176,29 @@ public class PlayerController : MonoBehaviour
 
         if (crabsToLose >= numberOfCrabs_2D)
         {
-            playerLives_2D--;
-            PlayerGameObject_2D.GetComponent<Player2D>().LoseALife();
-
-            if (playerLives_2D == 0)
+            if (numberOfCrabs_2D <= 0)
             {
-                PlayerGameObject_2D.transform.rotation = Quaternion.Euler(0, 0, -90);
-                PlayerGameObject_2D.GetComponent<Animator>().Play("2DGameOver");
-                return;
-            }
+                playerLives_2D--;
+                PlayerGameObject_2D.GetComponent<Player2D>().LoseALife();
 
-            for (int i = 0; i < numberOfCrabs_2D; i++)
+                if (playerLives_2D == 0)
+                {
+                    PlayerGameObject_2D.transform.rotation = Quaternion.Euler(0, 0, -90);
+                    PlayerGameObject_2D.GetComponent<Animator>().Play("2DGameOver");
+                    return;
+                }
+            }
+            else
             {
-                crabPool[i].SetActive(false);
-            }
+                for (int i = 0; i < numberOfCrabs_2D; i++)
+                {
+                    crabPool[i].SetActive(false);
+                }
 
-            numberOfCrabs_2D = 0;
+                numberOfCrabs_2D = 0;
+            }   
         }
+
         else
         {
             for (int i = numberOfCrabs_2D; i > numberOfCrabs_2D - crabsToLose; i--)
