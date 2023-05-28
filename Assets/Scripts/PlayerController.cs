@@ -151,36 +151,48 @@ public class PlayerController : MonoBehaviour
 
     private void Handle2DCrabs()
     {
-        for (int i = 0; i < crabPool.Count; i++)
+        for (int i = 0; i < numberOfCrabs_2D; i++)
         {
           if (crabPool[i].activeSelf)
           {
                 Vector3 pointToFollow = crabPositionsList[i].transform.position - (transform.InverseTransformDirection(crabPositionsList[i].up * crabBodyOffset_2D));
                 crabPool[i].transform.position = Vector3.Lerp(crabPool[i].transform.position, pointToFollow, (7.8f + 7.8f * i) * Time.deltaTime);
                 crabPool[i].transform.rotation = Quaternion.Lerp(crabPool[i].transform.rotation, crabPositionsList[i].rotation, 4.8f * Time.deltaTime);
-
             }
         }
     }
 
     public void Handle2DHazard(int ID) //ID = 1 is butter, ID = 0 is Cleaver. The lower the number the more crabs the player will lose.
     {
-        int crabsToLose = 5 + (5 * ID);
+        int crabsToLose = 4 + (2 * ID);
 
-        for (int i = numberOfCrabs_2D; i > crabsToLose; i--)
-        {
-            crabPool[i].SetActive(false);
-        }
-
-        if (crabsToLose > numberOfCrabs_2D - 1)
+        if (crabsToLose >= numberOfCrabs_2D)
         {
             playerLives_2D--;
             PlayerGameObject_2D.GetComponent<Player2D>().LoseALife();
 
             if (playerLives_2D == 0)
             {
+                PlayerGameObject_2D.transform.rotation = Quaternion.Euler(0, 0, -90);
                 PlayerGameObject_2D.GetComponent<Animator>().Play("2DGameOver");
+                return;
             }
+
+            for (int i = 0; i < numberOfCrabs_2D; i++)
+            {
+                crabPool[i].SetActive(false);
+            }
+
+            numberOfCrabs_2D = 0;
+        }
+        else
+        {
+            for (int i = numberOfCrabs_2D; i > numberOfCrabs_2D - crabsToLose; i--)
+            {
+                crabPool[i].SetActive(false);
+            }
+
+            numberOfCrabs_2D -= crabsToLose;
         }
     }
 

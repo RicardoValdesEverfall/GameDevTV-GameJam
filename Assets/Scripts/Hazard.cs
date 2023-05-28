@@ -48,6 +48,7 @@ public class Hazard : MonoBehaviour
         if (col.CompareTag("Player2D"))
         {
             _playerControllerRef.Handle2DHazard(ID);
+            this.gameObject.GetComponent<Animator>().enabled = false;
             this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
         }
     }

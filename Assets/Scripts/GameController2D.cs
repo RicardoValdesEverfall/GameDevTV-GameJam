@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameController2D : MonoBehaviour
 {
-    [SerializeField] private Hazard[] Hazards;
+    [SerializeField] private GameObject[] Hazards;
     [SerializeField] private Pickup2D[] PickUps;
 
     [SerializeField] private Transform HazardsParent;
@@ -14,6 +14,9 @@ public class GameController2D : MonoBehaviour
     [SerializeField, Range(1f, 10f)] private float SpawnTimerHazards;
     [SerializeField, Range(1f, 10f)] private float SpawnTimerPickups;
 
+    [SerializeField, Range(1f, 5f)] private int numOfSpawnsHazards;
+    [SerializeField, Range(1f, 5f)] private int numOfSpawnsPickups;
+
     [SerializeField] private Image Background;
 
     private PlayerController _playerControllerRef;
@@ -21,17 +24,19 @@ public class GameController2D : MonoBehaviour
     private float spawnTimerH;
     private float spawnTimerP;
 
-    public bool canSpawn;
+    [System.NonSerialized] public bool canSpawn;
+
     private int mapWidth;
     private int mapHeight;
+    private int multiplier = 1;
 
     void Start()
     {
         spawnTimerH = SpawnTimerHazards;
         spawnTimerP = SpawnTimerPickups;
 
-        mapWidth = (int)(Background.rectTransform.rect.width / 2) - 150;
-        mapHeight = (int)(Background.rectTransform.rect.height / 2) - 150;
+        mapWidth = (int)(Background.rectTransform.rect.width / 2) + 150;
+        mapHeight = (int)(Background.rectTransform.rect.height / 2) + 125;
 
         if (_playerControllerRef == null) { _playerControllerRef = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>(); }
     }
@@ -41,18 +46,21 @@ public class GameController2D : MonoBehaviour
     {
         if (canSpawn)
         {
-            spawnTimerH -= Time.deltaTime;
+            if (_playerControllerRef.numberOfCrabs_2D > 10) { multiplier += 3; }
+            else { multiplier = 1; }
+
+            spawnTimerH -= multiplier * Time.deltaTime;
             spawnTimerP -= Time.deltaTime;
 
             if (spawnTimerH < 0)
             {
-                SpawnRandomHazard();
+                for (int i = 0; i < numOfSpawnsPickups; i++) { SpawnRandomHazard(); }
                 spawnTimerH = SpawnTimerHazards;
             }
 
             if (spawnTimerP < 0)
             {
-                SpawnPickup();
+                for (int i = 0; i < numOfSpawnsPickups; i++) { SpawnPickup(); }
                 spawnTimerP = SpawnTimerPickups;
             }
         }
@@ -60,14 +68,22 @@ public class GameController2D : MonoBehaviour
 
     private void SpawnRandomHazard()
     {
-        Hazard newHazard = Instantiate(Hazards[Random.Range(0, Hazards.Length)], HazardsParent);
+        GameObject _hazard = Instantiate(Hazards[Random.Range(0, Hazards.Length)], HazardsParent);
+        Hazard newHazard = _hazard.GetComponent<Hazard>();
+
         int side = Random.Range(0, 2) * 2 - 1;
+
         Vector3 spawnPos = new Vector3(Random.Range((mapWidth * side), mapWidth * -side), Random.Range((mapHeight * side), mapHeight * -side), 0f);
 
         if (newHazard.ID == 0)
         {
             spawnPos.x = mapWidth * side;
             newHazard.SetTargetPosition(-spawnPos);
+        }
+
+        if (newHazard.ID == 2)
+        {
+            newHazard.transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 90) * side);
         }
 
         newHazard._playerControllerRef = _playerControllerRef;

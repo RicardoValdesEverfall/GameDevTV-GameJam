@@ -35,7 +35,8 @@ public class Player2D : MonoBehaviour
     public void LoseALife()
     {
         int i = _playerControllerRef.playerLives_2D;
+        if (i < 0) { return; }
 
-        if (i <= PlayerLives.Length) { PlayerLives[i].enabled = false; }
+        PlayerLives[i].enabled = false; 
     }
 }

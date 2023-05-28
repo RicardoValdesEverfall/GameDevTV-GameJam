@@ -39,8 +39,8 @@ Material:
     - _ScanningLinesAmount: 0.072
     - _Speed: 2.4
     m_Colors:
-    - _Color: {r: 0.8584906, g: 0.8584906, b: 0.8584906, a: 0.31764707}
-    - _Emission: {r: 0, g: 0.05490196, b: 0.11372549, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.31764707}
+    - _Emission: {r: 0, g: 0.0048526935, b: 0.010052008, a: 0}
     - _NoiseSpeed: {r: 10, g: 20.48, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &500310563130277841

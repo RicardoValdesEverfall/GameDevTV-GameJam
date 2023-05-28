@@ -18,7 +18,7 @@ public class AIController : MonoBehaviour
     [SerializeField] private Transform Agent;
     [SerializeField] private Light DoorLight;
 
-    private AudioController _audioControllerRef;
+    [SerializeField] private AudioController _audioControllerRef;
 
     private float timerToAction;
     private float timerToAttack;
@@ -32,7 +32,6 @@ public class AIController : MonoBehaviour
         DoorLight.gameObject.SetActive(false);
 
         if (_playerControllerRef == null) { _playerControllerRef = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>(); }
-        _audioControllerRef = _playerControllerRef.GetComponent<AudioController>();
     }
 
     private void Update()
@@ -136,7 +135,7 @@ public class AIController : MonoBehaviour
     private void MoveAgent(int pointIndex)
     {
         Agent.position = Points[pointIndex].position;
-        //PlaySFX(pointIndex);
+        PlaySFX(pointIndex);
     }
 
     private void StartAttack()
