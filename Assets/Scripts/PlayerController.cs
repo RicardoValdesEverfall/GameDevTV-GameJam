@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Animator PlayerAnimator;
     [SerializeField] private Animator ConsoleAnimator;
     [SerializeField] private PostProcessVolume Postprocess_3D;
+    [SerializeField] private float MaxFOV;
 
     private MainMenuManager _mainMenuRef;
     private AudioController _audioControllerRef;
@@ -65,7 +66,6 @@ public class PlayerController : MonoBehaviour
         if (_gameControllerRef == null) { _gameControllerRef = EnvironmentMap_2D.GetComponent<GameController2D>(); }
         if (_audioControllerRef == null) { _audioControllerRef = this.GetComponent<AudioController>(); }
 
-        //Postprocess_3D.profile.TryGetSettings<DepthOfField>(out DoF);
         _mainMenuRef.CurrentState = MainMenuManager.MenuStates.game;
         PlayerCurrentState = PlayerState.is2D;
         startingRotation_3D = cameraTransform_3D.localRotation;
@@ -235,7 +235,7 @@ public class PlayerController : MonoBehaviour
         //rotateValue_3D.y = Mathf.Clamp(rotateValue_3D.y, -90f, 45f);
 
         float FOV = cameraTransform_3D.GetComponent<Camera>().fieldOfView;
-        FOV = Mathf.Lerp(FOV, 80f, 8.8f * Time.deltaTime);
+        FOV = Mathf.Lerp(FOV, MaxFOV, 8.8f * Time.deltaTime);
         cameraTransform_3D.GetComponent<Camera>().fieldOfView = FOV;
         childCam.fieldOfView = FOV;
 
@@ -251,7 +251,7 @@ public class PlayerController : MonoBehaviour
         cameraTransform_3D.position = Vector3.MoveTowards(cameraTransform_3D.position, cameraStartPosition, 2.8f * Time.deltaTime);
 
         float FOV = cameraTransform_3D.GetComponent<Camera>().fieldOfView;
-        FOV = Mathf.Lerp(FOV, 60f, 0.8f * Time.deltaTime);
+        FOV = Mathf.Lerp(FOV, 60, 0.8f * Time.deltaTime);
         cameraTransform_3D.GetComponent<Camera>().fieldOfView = FOV;
         childCam.fieldOfView = FOV;
 
