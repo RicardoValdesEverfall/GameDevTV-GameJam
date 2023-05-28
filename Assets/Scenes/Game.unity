@@ -2150,6 +2150,7 @@ MonoBehaviour:
   ConsoleAnimator: {fileID: 0}
   consoleStatus: 0
   cameraTransform_3D: {fileID: 963194228}
+  childCam: {fileID: 1668607846}
   CameraSensitivity_3D: 2
   PlayerGameObject_2D: {fileID: 1686969293}
   PlayerCrabBodyObj_2D: {fileID: 7850023657930725304, guid: 6d97f85415d32a14bb74dcc4b9d4cdbc, type: 3}
@@ -7543,7 +7544,7 @@ MonoBehaviour:
   - {fileID: 2538709718924564327, guid: bebbf56b6eb320a4081b7d4af8f4b9f8, type: 3}
   HazardsParent: {fileID: 1073634211}
   PickUpsParent: {fileID: 846677726}
-  SpawnTimerHazards: 4
+  SpawnTimerHazards: 5
   SpawnTimerPickups: 1.5
   numOfSpawnsHazards: 1
   numOfSpawnsPickups: 4
@@ -8257,7 +8258,7 @@ GameObject:
   - component: {fileID: 1668607846}
   - component: {fileID: 1668607845}
   m_Layer: 6
-  m_Name: Camera
+  m_Name: NoPostCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8270,7 +8271,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1668607843}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

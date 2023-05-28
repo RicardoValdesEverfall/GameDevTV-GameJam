@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("3D Attributes")]
     [SerializeField] private Transform cameraTransform_3D;
+    [SerializeField] private Camera childCam;
     [SerializeField, Range(1, 10)] public int CameraSensitivity_3D;
 
     private Vector2 playerInput_3D;
@@ -223,6 +224,7 @@ public class PlayerController : MonoBehaviour
         float FOV = cameraTransform_3D.GetComponent<Camera>().fieldOfView;
         FOV = Mathf.Lerp(FOV, 80f, 8.8f * Time.deltaTime);
         cameraTransform_3D.GetComponent<Camera>().fieldOfView = FOV;
+        childCam.fieldOfView = FOV;
 
         cameraTransform_3D.position = Vector3.MoveTowards(cameraTransform_3D.position, cameraPeekOffset, 3.8f * Time.deltaTime);
         cameraTransform_3D.rotation = Quaternion.Euler(-rotateValue_3D);
@@ -238,6 +240,7 @@ public class PlayerController : MonoBehaviour
         float FOV = cameraTransform_3D.GetComponent<Camera>().fieldOfView;
         FOV = Mathf.Lerp(FOV, 60f, 0.8f * Time.deltaTime);
         cameraTransform_3D.GetComponent<Camera>().fieldOfView = FOV;
+        childCam.fieldOfView = FOV;
 
     }
 

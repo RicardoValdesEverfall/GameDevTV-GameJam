@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 2
-  SelfDestructTime: 35
+  SelfDestructTime: 25
   MoveSpeed: 0
   _playerControllerRef: {fileID: 0}
 --- !u!61 &7646277493306927862
