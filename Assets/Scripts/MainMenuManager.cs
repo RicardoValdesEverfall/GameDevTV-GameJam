@@ -2,19 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 
 public class MainMenuManager : MonoBehaviour
 {
     public static MainMenuManager InstanceOfMM { get { return _instance; } }
     private static MainMenuManager _instance;
 
-    [SerializeField] public enum MenuStates { main, game }
+    [SerializeField] public enum MenuStates { tutorial, main, game }
     [SerializeField] public MenuStates CurrentState;
 
     [SerializeField] private GameObject StartMenuParent;
     [SerializeField] private GameObject SettingsMenuParent;
 
+    [SerializeField] private float TimeToSkip;
+    [SerializeField] private Image loadingImage;
+
     private Animator mainMenuAnimator;
+    private bool isPlaying;
+    private float skipTimer;
+
 
     private void Awake()
     {
@@ -29,8 +37,9 @@ public class MainMenuManager : MonoBehaviour
     {
         DontDestroyOnLoad(this.gameObject);
 
-        CurrentState = MenuStates.main;
+        CurrentState = MenuStates.tutorial;
         SceneManager.sceneLoaded += OnSceneLoaded;
+        skipTimer = TimeToSkip;
 
         if (mainMenuAnimator == null) { mainMenuAnimator = this.GetComponent<Animator>(); }
         if (StartMenuParent == null) { StartMenuParent = GameObject.FindGameObjectWithTag("StartSubMenu"); }
@@ -41,7 +50,24 @@ public class MainMenuManager : MonoBehaviour
     {
         switch (CurrentState)
         {
+            case MenuStates.tutorial:
+                StartMenuParent.SetActive(false);
+                if (!isPlaying) { mainMenuAnimator.Play("IntroVideo"); isPlaying = true; }
+
+                if (isPlaying && Input.GetKey(KeyCode.Space))
+                {
+                    skipTimer -= Time.deltaTime;
+                    loadingImage.fillAmount = Mathf.InverseLerp(TimeToSkip, 0, skipTimer);
+
+                    if (skipTimer < 0)
+                    {
+                        CurrentState = MenuStates.main;
+                    }
+                } else { loadingImage.fillAmount = 0; skipTimer = TimeToSkip; }
+                break;
+
             case MenuStates.main:
+                if (isPlaying) { mainMenuAnimator.Play("ExitVideo"); isPlaying = false; }
                 StartMenuParent.SetActive(true);
                 break;
 
@@ -67,6 +93,11 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
+    public void ShowTutorial()
+    {
+        CurrentState = MenuStates.tutorial;
+    }
+
     public void StartGame()
     {
         mainMenuAnimator.Play("FadeOut");
@@ -90,6 +121,11 @@ public class MainMenuManager : MonoBehaviour
     {
         mainMenuAnimator.Play("GameOver");
         
+    }
+
+    public void ClickOnLink(string URL)
+    {
+        Application.OpenURL(URL);
     }
 
     public void ExitGame()
