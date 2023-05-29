@@ -2343,8 +2343,8 @@ MonoBehaviour:
   PlayerCrabBodyObj_2D: {fileID: 7850023657930725304, guid: 6d97f85415d32a14bb74dcc4b9d4cdbc, type: 3}
   EnvironmentMap_2D: {fileID: 1498286349}
   CrabBody_2D: {fileID: 1991655762}
-  maxSpeed_2D: 50
-  rotationSpeed_2D: 175
+  maxSpeed_2D: 80
+  rotationSpeed_2D: 200
   crabBodyOffset_2D: 10
   numberOfCrabs_2D: 0
   playerLives_2D: 3

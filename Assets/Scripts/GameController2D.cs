@@ -33,8 +33,7 @@ public class GameController2D : MonoBehaviour
 
     private int mapWidth;
     private int mapHeight;
-    private int multiplier = 1;
-
+    
     void Start()
     {
         spawnTimerH = SpawnTimerHazards;
@@ -50,10 +49,8 @@ public class GameController2D : MonoBehaviour
     {
         if (canSpawn)
         {
-            if (_playerControllerRef.numberOfCrabs_2D > 10) { multiplier += 3; }
-            else { multiplier = 1; }
 
-            spawnTimerH -= multiplier * Time.deltaTime;
+            spawnTimerH -= Time.deltaTime;
             spawnTimerP -= Time.deltaTime;
 
             if (spawnTimerH < 0)
