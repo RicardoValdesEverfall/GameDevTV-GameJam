@@ -6,7 +6,8 @@ public class Pickup2D : MonoBehaviour
 {
     [SerializeField] private PlayerController _playerControllerRef;
     [SerializeField] private int ID;
-     
+    [SerializeField] private float SelfDestructTime;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +30,12 @@ public class Pickup2D : MonoBehaviour
 
     public void SetStartPosition(Vector3 position)
     {
-        this.transform.position = position;
+        this.transform.localPosition = position;
+    }
+
+    private IEnumerator SelfDestruct()
+    {
+        yield return new WaitForSeconds(SelfDestructTime);
+        Destroy(this.gameObject);
     }
 }

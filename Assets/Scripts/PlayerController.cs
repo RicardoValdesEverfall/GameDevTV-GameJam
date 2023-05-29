@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
 
     private bool isLooking_3D;
 
-
     #region 2D ATTRIBUTES
     [Header("2D Attributes")]
     [SerializeField] private GameObject Game_2D;
@@ -54,7 +53,6 @@ public class PlayerController : MonoBehaviour
     public int numberOfCrabs_2D = 0;
     private int crabPoolSize = 25;
     public int playerLives_2D = 3;
-
     #endregion
 
     void Start()
@@ -103,12 +101,11 @@ public class PlayerController : MonoBehaviour
                     HandleRotation();
                     Handle3DInput();
                 }
-                else { ResetCamera(); _audioControllerRef.isLooking = false; /*Postprocess_3D.profile.AddSettings(DoF);*/ }
+                else { ResetCamera(); _audioControllerRef.isLooking = false; }
                 break;
 
             case PlayerState.is3D:
-                if (consoleStatus) { HandleConsole("CloseConsole"); consoleStatus = false; /*Postprocess_3D.profile.RemoveSettings<DepthOfField>();*/
-                }
+                if (consoleStatus) { HandleConsole("CloseConsole"); consoleStatus = false; }
                 _gameControllerRef.canSpawn = consoleStatus;
                 HandleRotation();
                 Handle3DInput();
@@ -299,6 +296,11 @@ public class PlayerController : MonoBehaviour
     {
         PlayerAnimator.Play("GameOver");
         Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void HandleGameWin()
+    {
+
     }
 
     public void ShowSettingsMenu(int state)

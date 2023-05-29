@@ -118,3 +118,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerControllerRef: {fileID: 0}
   ID: 0
+  SelfDestructTime: 6
