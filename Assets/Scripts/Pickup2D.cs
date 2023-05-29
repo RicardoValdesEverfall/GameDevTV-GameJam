@@ -13,7 +13,6 @@ public class Pickup2D : MonoBehaviour
         _playerControllerRef = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         

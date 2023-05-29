@@ -34,4 +34,9 @@ public class Player2D : MonoBehaviour
 
         PlayerLives[i].enabled = false; 
     }
+
+    public void RestartGame()
+    {
+        _playerControllerRef.Handle2DGameOver();
+    }
 }

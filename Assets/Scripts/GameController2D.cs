@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class GameController2D : MonoBehaviour
 {
+    [SerializeField] public GameObject PlayerGameObject;
+    [SerializeField] public GameObject PlayerCrabBodyObj;
+    [SerializeField] public GameObject EnvironmentMap;
+    [SerializeField] public Transform CrabBody;
+
     [SerializeField] private GameObject[] Hazards;
     [SerializeField] private Pickup2D[] PickUps;
 
@@ -41,7 +46,6 @@ public class GameController2D : MonoBehaviour
         if (_playerControllerRef == null) { _playerControllerRef = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>(); }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (canSpawn)
@@ -97,10 +101,5 @@ public class GameController2D : MonoBehaviour
         Vector3 spawnPos = new Vector3(Random.Range(mapWidth * side, mapWidth * -side) , Random.Range((mapHeight * side), mapHeight * -side), 0f);
 
         pickup.SetStartPosition(spawnPos);
-    }
-
-    public void RestartGame()
-    {
-
     }
 }
