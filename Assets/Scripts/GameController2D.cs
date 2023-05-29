@@ -39,8 +39,8 @@ public class GameController2D : MonoBehaviour
         spawnTimerH = SpawnTimerHazards;
         spawnTimerP = SpawnTimerPickups;
 
-        mapWidth = (int)(Background.rectTransform.rect.width / 2) + 150;
-        mapHeight = (int)(Background.rectTransform.rect.height / 2) + 125;
+        mapWidth = (int)(Background.rectTransform.rect.width / 2) - 150;
+        mapHeight = (int)(Background.rectTransform.rect.height / 2) - 125;
 
         if (_playerControllerRef == null) { _playerControllerRef = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>(); }
     }

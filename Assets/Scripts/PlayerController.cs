@@ -39,6 +39,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject Game_2D;
     [SerializeField] private Transform GameParent_2D;
 
+    [SerializeField] private AudioClip GoodCrab;
+    [SerializeField] private AudioClip BadCrab;
+
     [SerializeField] public GameObject PlayerGameObject_2D;
     [SerializeField] private GameObject PlayerCrabBodyObj_2D;
     [SerializeField] private GameObject EnvironmentMap_2D;
@@ -47,11 +50,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Range(100f, 200f)] private float rotationSpeed_2D;
     [SerializeField] private float crabBodyOffset_2D;
 
+
+    private AudioSource crabSFX;
     private List<GameObject> crabPool = new List<GameObject>();
     private List<Transform> crabPositionsList = new List<Transform>();
     private Vector2 playerInput_2D;
     public int numberOfCrabs_2D = 0;
-    private int crabPoolSize = 25;
+    private int crabPoolSize = 50;
     public int playerLives_2D = 3;
     #endregion
 
@@ -65,6 +70,7 @@ public class PlayerController : MonoBehaviour
         if (EnvironmentMap_2D == null) { EnvironmentMap_2D = GameObject.FindGameObjectWithTag("Environment2D"); }
         if (_gameControllerRef == null) { _gameControllerRef = EnvironmentMap_2D.GetComponent<GameController2D>(); }
         if (_audioControllerRef == null) { _audioControllerRef = this.GetComponent<AudioController>(); }
+        if (crabSFX == null) { crabSFX = PlayerGameObject_2D.GetComponent<AudioSource>(); }
 
         _mainMenuRef.CurrentState = MainMenuManager.MenuStates.game;
         PlayerCurrentState = PlayerState.is2D;
@@ -203,6 +209,8 @@ public class PlayerController : MonoBehaviour
 
             numberOfCrabs_2D -= crabsToLose;
         }
+
+        crabSFX.PlayOneShot(BadCrab);
     }
 
     public void Handle2DGameOver()
