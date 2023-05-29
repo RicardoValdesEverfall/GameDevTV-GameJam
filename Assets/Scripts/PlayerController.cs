@@ -101,6 +101,11 @@ public class PlayerController : MonoBehaviour
                     Handle2DInput();
                 }
 
+                if (playerLives_2D <=0 && Input.anyKeyDown)
+                {
+                    Handle2DGameOver();
+                }
+
                 if (Input.GetMouseButton(2))
                 {
                     _audioControllerRef.isLooking = true;
@@ -303,7 +308,8 @@ public class PlayerController : MonoBehaviour
 
     public void HandleGameWin()
     {
-
+        _mainMenuRef.CurrentState = MainMenuManager.MenuStates.win;
+        cameraTransform_3D.gameObject.GetComponent<AudioListener>().enabled = false;
     }
 
     public void ShowSettingsMenu(int state)

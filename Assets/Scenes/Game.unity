@@ -2339,8 +2339,8 @@ MonoBehaviour:
   CameraSensitivity_3D: 2
   Game_2D: {fileID: 9040110222196213186, guid: eb31fc00fe042b04781c19a2d5e2d0e8, type: 3}
   GameParent_2D: {fileID: 932698321}
-  GoodCrab: {fileID: 0}
-  BadCrab: {fileID: 0}
+  GoodCrab: {fileID: 8300000, guid: ae00ba2ff3c8cd3499656471afb8f415, type: 3}
+  BadCrab: {fileID: 8300000, guid: 25bb6f60bd71ebf4998376efea558f6f, type: 3}
   PlayerGameObject_2D: {fileID: 1686969293}
   PlayerCrabBodyObj_2D: {fileID: 7850023657930725304, guid: 6d97f85415d32a14bb74dcc4b9d4cdbc, type: 3}
   EnvironmentMap_2D: {fileID: 1498286349}
@@ -10932,7 +10932,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 5

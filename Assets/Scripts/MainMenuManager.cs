@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 
 public class MainMenuManager : MonoBehaviour
@@ -10,18 +11,20 @@ public class MainMenuManager : MonoBehaviour
     public static MainMenuManager InstanceOfMM { get { return _instance; } }
     private static MainMenuManager _instance;
 
-    [SerializeField] public enum MenuStates { tutorial, main, game }
+    [SerializeField] public enum MenuStates { tutorial, main, game, win }
     [SerializeField] public MenuStates CurrentState;
 
     [SerializeField] private GameObject StartMenuParent;
     [SerializeField] private GameObject SettingsMenuParent;
     [SerializeField] private GameObject Credits;
+    [SerializeField] private GameObject Win;
+    [SerializeField] private VideoPlayer tutorialVideoPlayer;
 
     [SerializeField] private float TimeToSkip;
     [SerializeField] private Image loadingImage;
 
     private Animator mainMenuAnimator;
-    private bool isPlaying = true;
+    private bool isPlaying;
     private float skipTimer;
 
 
@@ -76,7 +79,18 @@ public class MainMenuManager : MonoBehaviour
                 if (isPlaying) { mainMenuAnimator.Play("ExitVideo"); isPlaying = false; }
                 StartMenuParent.SetActive(false);
                 break;
+
+            case MenuStates.win:
+                if (isPlaying) { mainMenuAnimator.Play("ExitVideo"); isPlaying = false; }
+                StartMenuParent.SetActive(false);
+                Win.SetActive(true);
+                break;
         }
+
+        if (isPlaying)
+        {
+            tutorialVideoPlayer.Play();
+        } else { tutorialVideoPlayer.Pause(); }
     }
 
     public void LoadGameScene(int index)
@@ -90,7 +104,6 @@ public class MainMenuManager : MonoBehaviour
         { 
             mainMenuAnimator.Play("FadeIn");
             CurrentState = MenuStates.game;
-            
         }
     }
 
@@ -121,7 +134,6 @@ public class MainMenuManager : MonoBehaviour
     public void GameOver()
     {
         mainMenuAnimator.Play("GameOver");
-        
     }
 
     public void ClickOnLink(string URL)

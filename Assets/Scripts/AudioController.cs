@@ -29,12 +29,7 @@ public class AudioController : MonoBehaviour
 
         if (_playerControllerRef.PlayerCurrentState == PlayerController.PlayerState.is2D)
         {
-            if (_playerControllerRef.numberOfCrabs_2D >= 10)
-            {
-                Environment2D.clip = Music2D[1];
-                Environment2D.Play();
-            }
-            else { Environment2D.clip = Music2D[0]; Environment2D.Play(); } 
+           
 
             Handle2DAudio(1);
             Handle3DAudio(-1);
@@ -48,8 +43,7 @@ public class AudioController : MonoBehaviour
 
         if (_playerControllerRef.PlayerCurrentState == PlayerController.PlayerState.isDead)
         {
-            Environment2D.clip = Music2D[2];
-            Environment2D.Play();
+         
 
             Handle2DAudio(1);
             Handle3DAudio(-1);
