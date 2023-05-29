@@ -21,7 +21,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Image loadingImage;
 
     private Animator mainMenuAnimator;
-    private bool isPlaying;
+    private bool isPlaying = true;
     private float skipTimer;
 
 
@@ -73,8 +73,8 @@ public class MainMenuManager : MonoBehaviour
                 break;
 
             case MenuStates.game:
+                if (isPlaying) { mainMenuAnimator.Play("ExitVideo"); isPlaying = false; }
                 StartMenuParent.SetActive(false);
-               // SettingsMenu(2);
                 break;
         }
     }
