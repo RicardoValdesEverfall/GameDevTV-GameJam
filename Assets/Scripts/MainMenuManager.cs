@@ -15,6 +15,7 @@ public class MainMenuManager : MonoBehaviour
 
     [SerializeField] private GameObject StartMenuParent;
     [SerializeField] private GameObject SettingsMenuParent;
+    [SerializeField] private GameObject Credits;
 
     [SerializeField] private float TimeToSkip;
     [SerializeField] private Image loadingImage;
@@ -131,5 +132,10 @@ public class MainMenuManager : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    public void ShowCredits(bool state)
+    {
+        Credits.SetActive(state);
     }
 }
