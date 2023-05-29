@@ -37,7 +37,9 @@ public class PlayerController : MonoBehaviour
 
     #region 2D ATTRIBUTES
     [Header("2D Attributes")]
-    
+    [SerializeField] private GameObject Game_2D;
+    [SerializeField] private Transform GameParent_2D;
+
     [SerializeField] public GameObject PlayerGameObject_2D;
     [SerializeField] private GameObject PlayerCrabBodyObj_2D;
     [SerializeField] private GameObject EnvironmentMap_2D;
@@ -185,6 +187,7 @@ public class PlayerController : MonoBehaviour
                 {
                     PlayerGameObject_2D.transform.rotation = Quaternion.Euler(0, 0, -90);
                     PlayerGameObject_2D.GetComponent<Animator>().Play("2DGameOver");
+                    Cursor.lockState = CursorLockMode.None;
                     return;
                 }
             }
@@ -212,7 +215,32 @@ public class PlayerController : MonoBehaviour
 
     public void Handle2DGameOver()
     {
+        Destroy(GameObject.FindGameObjectWithTag("2DGame"));
 
+        GameObject newGame2D = Instantiate(Game_2D, GameParent_2D);
+        GameController2D newGameController = newGame2D.GetComponentInChildren<GameController2D>();
+
+        PlayerGameObject_2D = newGameController.PlayerGameObject;
+        PlayerCrabBodyObj_2D = newGameController.PlayerCrabBodyObj;
+        EnvironmentMap_2D = newGameController.EnvironmentMap;
+        CrabBody_2D = newGameController.CrabBody;
+
+        crabPositionsList.Clear();
+        crabPool.Clear();
+
+        for (int i = 0; i < crabPoolSize; i++)
+        {
+            GameObject crabBody = Instantiate(PlayerCrabBodyObj_2D, CrabBody_2D);
+            crabBody.SetActive(false);
+            crabPool.Add(crabBody);
+        }
+
+        crabPositionsList.Add(PlayerGameObject_2D.transform);
+
+        playerLives_2D = 3;
+        numberOfCrabs_2D = 0;
+
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void Handle3DInput()
@@ -231,8 +259,8 @@ public class PlayerController : MonoBehaviour
         rotateValue_3D.y -= playerInput_3D.y;
         rotateValue_3D.x += playerInput_3D.x;
 
-       // rotateValue_3D.x = Mathf.Clamp(rotateValue_3D.x, -90f, 45f);
-        //rotateValue_3D.y = Mathf.Clamp(rotateValue_3D.y, -90f, 45f);
+        rotateValue_3D.x = Mathf.Clamp(rotateValue_3D.x, -90f, 45f);
+        rotateValue_3D.y = Mathf.Clamp(rotateValue_3D.y, -90f, 45f);
 
         float FOV = cameraTransform_3D.GetComponent<Camera>().fieldOfView;
         FOV = Mathf.Lerp(FOV, MaxFOV, 8.8f * Time.deltaTime);
