@@ -149,11 +149,6 @@ public class PlayerController : MonoBehaviour
             crabPositionsList.Add(crabPool[numberOfCrabs_2D].transform);
             numberOfCrabs_2D++;
         }
-       
-        if (pickUpID == 1)
-        {
-
-        }
     }
 
     private void Handle2DCrabs()
