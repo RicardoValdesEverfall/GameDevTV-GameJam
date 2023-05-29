@@ -251,8 +251,8 @@ public class PlayerController : MonoBehaviour
         rotateValue_3D.y -= playerInput_3D.y;
         rotateValue_3D.x += playerInput_3D.x;
 
-        rotateValue_3D.x = Mathf.Clamp(rotateValue_3D.x, -90f, 45f);
-        rotateValue_3D.y = Mathf.Clamp(rotateValue_3D.y, -90f, 45f);
+        //rotateValue_3D.x = Mathf.Clamp(rotateValue_3D.x, -90f, 45f);
+        //rotateValue_3D.y = Mathf.Clamp(rotateValue_3D.y, -90f, 45f);
 
         float FOV = cameraTransform_3D.GetComponent<Camera>().fieldOfView;
         FOV = Mathf.Lerp(FOV, MaxFOV, 8.8f * Time.deltaTime);
