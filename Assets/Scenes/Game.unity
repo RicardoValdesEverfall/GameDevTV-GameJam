@@ -16395,6 +16395,7 @@ GameObject:
   - component: {fileID: 9153034128484414475}
   - component: {fileID: 1447509402379843550}
   - component: {fileID: 5384189954066067523}
+  - component: {fileID: 9153034128484414476}
   m_Layer: 6
   m_Name: Fan_Center
   m_TagString: Untagged
@@ -34215,15 +34216,35 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1244123027276987626}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: -0.0072671934}
+  m_LocalRotation: {x: -0, y: -0.000000007450581, z: 0.047602396, w: 0.99886644}
+  m_LocalPosition: {x: 0, y: -5.9604643e-10, z: -0.007267193}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8237331763739394123}
   m_Father: {fileID: 3612029522790816832}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 5.457}
+--- !u!95 &9153034128484414476
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244123027276987626}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c814b040461fcf1428a2e3410a56b7f5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!23 &9153116232598492591
 MeshRenderer:
   m_ObjectHideFlags: 0
