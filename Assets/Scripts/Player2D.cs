@@ -27,11 +27,6 @@ public class Player2D : MonoBehaviour
         if (crabCount <= 5) { CrabCounter.color = Color.red; }
     }
 
-    public void AnimFinish2D()
-    {
-        _playerControllerRef.Handle2DGameOver();
-    }
-
     public void LoseALife()
     {
         int i = _playerControllerRef.playerLives_2D;

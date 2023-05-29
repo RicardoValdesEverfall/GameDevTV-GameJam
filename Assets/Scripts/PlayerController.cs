@@ -270,7 +270,7 @@ public class PlayerController : MonoBehaviour
     public void HandleGameOver()
     {
         PlayerAnimator.Play("GameOver");
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void ShowSettingsMenu(int state)
